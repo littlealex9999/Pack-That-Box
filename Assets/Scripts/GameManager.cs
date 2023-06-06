@@ -17,6 +17,9 @@ public class GameManager : MonoBehaviour
 
     float score;
 
+    [SerializeField] float minutesToGameEnd;
+    float timer;
+
     [SerializeField] Transform customerSpawnLocation;
     [SerializeField] Transform customerWaitLocation;
     [SerializeField] int itemsPerPerson = 3;
@@ -25,6 +28,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject[] requestableObjects;
 
     List<Customer> currentCustomers = new List<Customer>();
+    [HideInInspector] public List<Box> preparedBoxes = new List<Box>();
 
     void Start()
     {
@@ -34,7 +38,27 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        
+        switch (state) {
+            case GameState.Menu:
+
+                break;
+            case GameState.Playing:
+                timer -= Time.deltaTime;
+                if (timer <= 0) EndGame(); // the game ends when time hits 0
+
+                // game logic
+                if (currentCustomers.Count == 0) {
+                    CreateNewCustomer();
+                }
+
+                foreach (Box b in preparedBoxes) {
+                    if (CheckBoxDone(b, out Customer happyCustomer)) {
+                        Destroy(b.gameObject);
+                        Destroy(happyCustomer.gameObject);
+                    }
+                }
+                break;
+        }
     }
 
     void CreateNewCustomer()
@@ -53,7 +77,7 @@ public class GameManager : MonoBehaviour
         newCustomer.AssignItems(newCustomerItems);
     }
 
-    bool CheckBoxDone(Box box)
+    bool CheckBoxDone(Box box, out Customer targetCustomer)
     {
         foreach (Customer c in currentCustomers) {
             List<int> usedItems = new List<int>();
@@ -76,6 +100,7 @@ public class GameManager : MonoBehaviour
             }
 
             if (usedItems.Count >= c.items.Count) { // we have all the items the customer wants
+                targetCustomer = c;
                 int unnecessaryItems = box.itemsInBox.Count - usedItems.Count;
 
                 // calculate score
@@ -84,6 +109,18 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        targetCustomer = null;
         return false;
+    }
+
+    void StartGame()
+    {
+        state = GameState.Playing;
+        timer = minutesToGameEnd * 60; // turn to seconds
+    }
+
+    void EndGame()
+    {
+        state = GameState.Menu;
     }
 }
