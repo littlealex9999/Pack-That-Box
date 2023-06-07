@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
         if (instance == null) instance = this;
         else Destroy(this);
 
-        state = GameState.Playing; // just a debug measure to actually get gameplay happening
+        StartGame(); // just a debug measure to actually get gameplay happening
     }
 
     void Update()
