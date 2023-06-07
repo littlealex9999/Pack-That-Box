@@ -90,6 +90,7 @@ public class GameManager : MonoBehaviour
         }
 
         newCustomer.AssignItems(newCustomerItems);
+        newCustomer.SetMoveTarget(customerWaitLocation);
     }
 
     bool CheckBoxDone(Box box, out Customer targetCustomer)
