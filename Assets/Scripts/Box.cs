@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class Box : MonoBehaviour
 {
-    public List<PackItem> itemsInBox = new List<PackItem>();
+    [HideInInspector] public List<PackItem> itemsInBox = new List<PackItem>();
 
     private void OnTriggerEnter(Collider other)
     {

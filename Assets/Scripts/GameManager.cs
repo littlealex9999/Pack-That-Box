@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    #region Variables
     public static GameManager instance; // singleton for references to a single game manager
 
-    enum GameState
+    public enum GameState
     {
         Menu,
         Playing,
@@ -29,11 +30,21 @@ public class GameManager : MonoBehaviour
 
     List<Customer> currentCustomers = new List<Customer>();
     [HideInInspector] public List<Box> preparedBoxes = new List<Box>();
+    #endregion
 
+    #region Access Properties
+    public GameState currentGameState { get { return state; } }
+    public float remainingTime { get { return timer; } }
+    #endregion
+
+    #region Functions
+    #region Unity
     void Start()
     {
         if (instance == null) instance = this;
         else Destroy(this);
+
+        state = GameState.Playing; // just a debug measure to actually get gameplay happening
     }
 
     void Update()
@@ -60,11 +71,13 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+    #endregion
 
+    #region Gameplay & Flow
     void CreateNewCustomer()
     {
         // create a random customer
-        Customer newCustomer = Instantiate(customers[Random.Range(0, customers.Length)]).GetComponent<Customer>();
+        Customer newCustomer = Instantiate(customers[Random.Range(0, customers.Length)], customerSpawnLocation.position, Quaternion.identity).GetComponent<Customer>();
         currentCustomers.Add(newCustomer);
 
         List<PackItem> newCustomerItems = new List<PackItem>();
@@ -72,6 +85,8 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < itemsPerPerson; ++i) {
             // add random items to our list
             newCustomerItems.Add(requestableObjects[Random.Range(0, requestableObjects.Length)].GetComponent<PackItem>());
+
+            Debug.Log(newCustomerItems[i].itemID); // for debug purposes
         }
 
         newCustomer.AssignItems(newCustomerItems);
@@ -112,7 +127,9 @@ public class GameManager : MonoBehaviour
         targetCustomer = null;
         return false;
     }
+    #endregion
 
+    #region Gamestate
     void StartGame()
     {
         state = GameState.Playing;
@@ -123,4 +140,6 @@ public class GameManager : MonoBehaviour
     {
         state = GameState.Menu;
     }
+    #endregion
+    #endregion
 }
