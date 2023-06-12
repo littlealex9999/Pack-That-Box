@@ -11,6 +11,15 @@ public class Score : ScriptableObject
     bool loadedProperly;
     public bool Loaded { get { return loadedProperly; } }
 
+    public Score() { }
+    public Score(bool loaded, float[] presetScores) 
+    {
+        if (loaded) {
+            loadedProperly = loaded;
+            scores = presetScores;
+        }
+    }
+
     public void AddScore(float score)
     {
         for (int i = 0; i < scores.Length; ++i) {
@@ -29,15 +38,5 @@ public class Score : ScriptableObject
         get {
             return scores[i];
         }
-    }
-
-    public void SaveScores(string filename)
-    {
-
-    }
-
-    public void LoadScores(string filename)
-    {
-
     }
 }

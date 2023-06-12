@@ -43,8 +43,14 @@ public class GameManager : MonoBehaviour
     #region Unity
     void Start()
     {
+        // instance setup
         if (instance == null) instance = this;
         else Destroy(this);
+
+        // score setup
+        if (FileSystem.LoadFile("scores.txt", out Score loadedScores)) {
+            scoreboard = loadedScores;
+        }
 
         StartGame(); // just a debug measure to actually get gameplay happening
     }
@@ -185,6 +191,11 @@ public class GameManager : MonoBehaviour
         state = GameState.Menu;
         scoreboard.AddScore(score);
         score = 0;
+    }
+
+    void OnApplicationQuit()
+    {
+        FileSystem.SaveFile("scores.txt", scoreboard);
     }
     #endregion
     #endregion

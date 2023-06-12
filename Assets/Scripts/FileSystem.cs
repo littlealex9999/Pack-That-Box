@@ -7,9 +7,9 @@ using UnityEngine;
 public class FileSystem
 {
     #region Helper Functions
-    string DeterminePath(string filename) => Application.dataPath + "/" + filename;
+    static string DeterminePath(string filename) => Application.dataPath + "/" + filename;
 
-    BinaryWriter OpenWriter(string filename, out Stream stream)
+    static BinaryWriter OpenWriter(string filename, out Stream stream)
     {
         string path = DeterminePath(filename);
 
@@ -28,7 +28,7 @@ public class FileSystem
         return bw;
     }
 
-    BinaryReader OpenReader(string filename, out Stream stream)
+    static BinaryReader OpenReader(string filename, out Stream stream)
     {
         string path = DeterminePath(filename);
 
@@ -53,38 +53,48 @@ public class FileSystem
         return null;
     }
 
-    void CloseSystem(BinaryReader binaryIO, Stream stream)
+    static void CloseSystem(BinaryReader binaryIO, Stream stream)
     {
         binaryIO.Close();
         stream.Close();
     }
-    void CloseSystem(BinaryWriter binaryIO, Stream stream)
+    static void CloseSystem(BinaryWriter binaryIO, Stream stream)
     {
         binaryIO.Close();
         stream.Close();
     }
     #endregion
 
-    public void SaveFile(string filename)
+    public static void SaveFile(string filename, Score score)
     {
         BinaryWriter bw = OpenWriter(filename, out Stream s);
 
-        bw.Write(10);
+        bw.Write(score.Length);
+        for (int i = 0; i < score.Length; ++i) {
+            bw.Write(score[i]);
+        }
 
         CloseSystem(bw, s);
     }
 
-    public bool LoadFile(string filename, out int output)
+    public static bool LoadFile(string filename, out Score score)
     {
         BinaryReader br = OpenReader(filename, out Stream s);
+
         if (br != null) {
-            output = br.ReadInt32();
+            float[] scoresValues = new float[br.ReadInt32()];
+
+            for (int i = 0; i < scoresValues.Length; ++i) {
+                scoresValues[i] = br.ReadSingle();
+            }
+
+            score = new Score(true, scoresValues);
 
             CloseSystem(br, s);
             return true;
-        } else {
-            output = 0;
-            return false;
         }
+
+        score = new Score();
+        return false;
     }
 }
