@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
 
     GameState state = GameState.Menu;
 
+    [SerializeField] Score scoreboard;
     float score;
 
     [SerializeField] float minutesToGameEnd;
@@ -182,6 +183,8 @@ public class GameManager : MonoBehaviour
     void EndGame()
     {
         state = GameState.Menu;
+        scoreboard.AddScore(score);
+        score = 0;
     }
     #endregion
     #endregion
