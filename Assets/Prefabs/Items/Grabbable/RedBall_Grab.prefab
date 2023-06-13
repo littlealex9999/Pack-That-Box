@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3907484805212640800}
   - component: {fileID: 8180045404461241520}
   - component: {fileID: 8664146135665242918}
+  - component: {fileID: 8319684888227087100}
   m_Layer: 0
   m_Name: RedBall_Grab
   m_TagString: Item
@@ -216,3 +217,16 @@ MonoBehaviour:
   m_ForceGravityOnDetach: 0
   m_RetainTransformParent: 1
   m_AttachPointCompatibilityMode: 0
+--- !u!135 &8319684888227087100
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3259146848325089269}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.070937574
+  m_Center: {x: 0, y: 0, z: 0}

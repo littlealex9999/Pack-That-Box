@@ -179,6 +179,7 @@ GameObject:
   - component: {fileID: 4118741930106703062}
   - component: {fileID: 477086126494362310}
   - component: {fileID: 5881964085503936115}
+  - component: {fileID: -9195277940458927620}
   m_Layer: 0
   m_Name: Computer_Grab
   m_TagString: Item
@@ -341,6 +342,19 @@ MonoBehaviour:
   m_ForceGravityOnDetach: 0
   m_RetainTransformParent: 1
   m_AttachPointCompatibilityMode: 0
+--- !u!65 &-9195277940458927620
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3630857162805483116}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.2982178, y: 1.3123913, z: 0.67388535}
+  m_Center: {x: -0.020284653, y: 0.0064382553, z: -0.005121231}
 --- !u!1 &4017135979220881053
 GameObject:
   m_ObjectHideFlags: 0

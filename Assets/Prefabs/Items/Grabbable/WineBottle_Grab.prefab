@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6244193180234875076}
   - component: {fileID: 5227995472465871925}
   - component: {fileID: 4745470817322291313}
+  - component: {fileID: -4458772759008403086}
   m_Layer: 0
   m_Name: WineBottle_Grab
   m_TagString: Item
@@ -218,3 +219,17 @@ MonoBehaviour:
   m_ForceGravityOnDetach: 0
   m_RetainTransformParent: 1
   m_AttachPointCompatibilityMode: 0
+--- !u!136 &-4458772759008403086
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5595486062391501073}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.08726363
+  m_Height: 0.5894321
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
