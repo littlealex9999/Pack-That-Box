@@ -13,6 +13,15 @@ public class Box : MonoBehaviour
     {
         if (other.tag == "Item") {
             itemsInBox.Add(other.GetComponent<PackItem>());
+            other.transform.SetParent(transform, true);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Item") {
+            itemsInBox.Remove(other.GetComponent<PackItem>());
+            other.transform.SetParent(null, true);
         }
     }
 }
