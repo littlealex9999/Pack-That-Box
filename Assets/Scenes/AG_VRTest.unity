@@ -2046,10 +2046,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aa6e872b120c6044a992606069c8a37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreboard: {fileID: 0}
+  scoreboard: {fileID: 11400000, guid: 340182e303c12ae49aebd9b7764b3ceb, type: 2}
   minutesToGameEnd: 5
-  customerSpawnLocation: {fileID: 1521005141}
-  customerWaitLocation: {fileID: 7039271}
+  customerSpawnLocations:
+  - {fileID: 1521005141}
+  customerWaitLocations:
+  - {fileID: 7039271}
+  customerLeaveLocations:
+  - {fileID: 1521005141}
   itemsPerPerson: 3
   customers:
   - {fileID: 8322523548514040714, guid: b7a0010266033044db016dfc117584e9, type: 3}
