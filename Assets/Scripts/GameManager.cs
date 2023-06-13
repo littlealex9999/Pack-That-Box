@@ -176,6 +176,16 @@ public class GameManager : MonoBehaviour
         float output = correctItems * 50 - unnecessaryItems * 60;
         return output;
     }
+
+    public void AddPreparedBox(Box box)
+    {
+        if (!preparedBoxes.Contains(box)) preparedBoxes.Add(box);
+    }
+
+    public void RemovePreparedBox(Box box)
+    {
+        preparedBoxes.Remove(box);
+    }
     #endregion
 
     #region Gamestate
