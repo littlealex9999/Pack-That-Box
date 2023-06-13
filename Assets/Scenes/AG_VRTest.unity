@@ -2059,6 +2059,7 @@ MonoBehaviour:
   requestableObjects:
   - {fileID: 796273227371880612, guid: 9446bf85c2b8a79468fc21331a447ba3, type: 3}
   itemsPerPerson: 3
+  customerItemRequestList: {fileID: 796273227371880612, guid: 9446bf85c2b8a79468fc21331a447ba3, type: 3}
   preparedBoxes: []
 --- !u!114 &859226240
 MonoBehaviour:

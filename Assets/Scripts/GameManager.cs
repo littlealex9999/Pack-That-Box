@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     [Header("Customers"), SerializeField] GameObject[] customerPresets;
     [SerializeField] GameObject[] requestableObjects;
     [SerializeField] int itemsPerPerson = 3;
+    [SerializeField] GameObject customerItemRequestList;
 
     List<Customer> currentCustomers = new List<Customer>();
     [HideInInspector] public List<Box> preparedBoxes = new List<Box>();
@@ -39,6 +40,7 @@ public class GameManager : MonoBehaviour
     public GameState currentGameState { get { return state; } }
     public float remainingTime { get { return timer; } }
     public float currentScore { get { return score; } }
+    public List<Customer> customers { get { return currentCustomers; } }
     #endregion
 
     #region Functions
@@ -111,6 +113,7 @@ public class GameManager : MonoBehaviour
         }
 
         newCustomer.AssignItems(newCustomerItems);
+        newCustomer.SetItemRequestList(customerItemRequestList);
         AssignCounterLocation(newCustomer);
     }
 
