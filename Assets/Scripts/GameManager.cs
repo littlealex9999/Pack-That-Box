@@ -79,6 +79,7 @@ public class GameManager : MonoBehaviour
 
                 foreach (Box b in preparedBoxes) {
                     if (CheckBoxDone(b, out Customer happyCustomer, out float scoreChange)) {
+                        RemovePreparedBox(b);
                         Destroy(b.gameObject);
                         RemoveCustomer(happyCustomer);
                         score += scoreChange;
