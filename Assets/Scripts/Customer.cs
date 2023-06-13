@@ -14,6 +14,8 @@ public class Customer : MonoBehaviour
     [HideInInspector] public int assignedWaitIndex = -1;
     [HideInInspector] public bool leaving = false;
 
+    GameObject itemRequestList;
+
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();

@@ -2054,11 +2054,11 @@ MonoBehaviour:
   - {fileID: 7039271}
   customerLeaveLocations:
   - {fileID: 1521005141}
-  itemsPerPerson: 3
-  customers:
+  customerPresets:
   - {fileID: 8322523548514040714, guid: b7a0010266033044db016dfc117584e9, type: 3}
   requestableObjects:
   - {fileID: 796273227371880612, guid: 9446bf85c2b8a79468fc21331a447ba3, type: 3}
+  itemsPerPerson: 3
   preparedBoxes: []
 --- !u!114 &859226240
 MonoBehaviour:

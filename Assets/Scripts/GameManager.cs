@@ -22,15 +22,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] float minutesToGameEnd;
     float timer;
 
-    [SerializeField] Transform[] customerSpawnLocations;
+    [Header("Locations"), SerializeField] Transform[] customerSpawnLocations;
     [SerializeField] Transform[] customerWaitLocations;
     [SerializeField] Transform[] customerLeaveLocations;
     Dictionary<int, bool> usedWaitLocations = new Dictionary<int, bool>();
 
-    [SerializeField] int itemsPerPerson = 3;
-
-    [SerializeField] GameObject[] customers;
+    [Header("Customers"), SerializeField] GameObject[] customerPresets;
     [SerializeField] GameObject[] requestableObjects;
+    [SerializeField] int itemsPerPerson = 3;
 
     List<Customer> currentCustomers = new List<Customer>();
     [HideInInspector] public List<Box> preparedBoxes = new List<Box>();
@@ -99,7 +98,7 @@ public class GameManager : MonoBehaviour
         Vector3 chosenSpawnLocation = customerSpawnLocations[Random.Range(0, customerSpawnLocations.Length)].position;
 
         // create a random customer
-        Customer newCustomer = Instantiate(customers[Random.Range(0, customers.Length)], chosenSpawnLocation, Quaternion.identity).GetComponent<Customer>();
+        Customer newCustomer = Instantiate(customerPresets[Random.Range(0, customerPresets.Length)], chosenSpawnLocation, Quaternion.identity).GetComponent<Customer>();
         currentCustomers.Add(newCustomer);
 
         List<PackItem> newCustomerItems = new List<PackItem>();
