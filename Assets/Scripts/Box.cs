@@ -7,12 +7,21 @@ using UnityEngine;
 /// </summary>
 public class Box : MonoBehaviour
 {
-    public List<PackItem> itemsInBox = new List<PackItem>();
+    [HideInInspector] public List<PackItem> itemsInBox = new List<PackItem>();
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Item") {
             itemsInBox.Add(other.GetComponent<PackItem>());
+            other.transform.SetParent(transform, true);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Item") {
+            itemsInBox.Remove(other.GetComponent<PackItem>());
+            other.transform.SetParent(null, true);
         }
     }
 }
