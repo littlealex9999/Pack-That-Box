@@ -22,8 +22,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] float minutesToGameEnd;
     float timer;
 
-    [SerializeField] Transform customerSpawnLocation;
-    [SerializeField] Transform customerWaitLocation;
+    [SerializeField] Transform[] customerSpawnLocations;
+    [SerializeField] Transform[] customerWaitLocations;
+    [SerializeField] Transform[] customerLeaveLocations;
+    Dictionary<int, bool> usedWaitLocations = new Dictionary<int, bool>();
+
     [SerializeField] int itemsPerPerson = 3;
 
     [SerializeField] GameObject[] customers;
@@ -50,6 +53,10 @@ public class GameManager : MonoBehaviour
         // score setup
         if (FileSystem.LoadFile("scores.txt", out Score loadedScores)) {
             scoreboard = loadedScores;
+        }
+
+        for (int i = 0; i < customerWaitLocations.Length; ++i) {
+            usedWaitLocations.Add(i, false);
         }
 
         StartGame(); // just a debug measure to actually get gameplay happening
@@ -83,10 +90,13 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Gameplay & Flow
+    #region Customers
     void CreateNewCustomer()
     {
+        Vector3 chosenSpawnLocation = customerSpawnLocations[Random.Range(0, customerSpawnLocations.Length)].position;
+
         // create a random customer
-        Customer newCustomer = Instantiate(customers[Random.Range(0, customers.Length)], customerSpawnLocation.position, Quaternion.identity).GetComponent<Customer>();
+        Customer newCustomer = Instantiate(customers[Random.Range(0, customers.Length)], chosenSpawnLocation, Quaternion.identity).GetComponent<Customer>();
         currentCustomers.Add(newCustomer);
 
         List<PackItem> newCustomerItems = new List<PackItem>();
@@ -99,15 +109,70 @@ public class GameManager : MonoBehaviour
         }
 
         newCustomer.AssignItems(newCustomerItems);
-        newCustomer.SetMoveTarget(customerWaitLocation);
+        AssignCounterLocation(newCustomer);
     }
 
     public void RemoveCustomer(Customer customer)
     {
         currentCustomers.Remove(customer);
-        Destroy(customer.gameObject); // for prototype; this should have the customer leave eventually
+        AssignLeavingLocation(customer);
     }
 
+    bool AssignCounterLocation(Customer customer)
+    {
+        bool successful = false;
+
+        List<int> attemptedNumbers = new List<int>();
+
+        while (!successful) {
+            int attemptingNumber = Random.Range(0, customerWaitLocations.Length);
+
+            if (attemptedNumbers.Count >= customerWaitLocations.Length) return false; // no available positions
+            if (attemptedNumbers.Contains(attemptingNumber)) attemptingNumber = (attemptingNumber + 1) % customerWaitLocations.Length;
+
+            if (AssignCounterLocation(customer, attemptingNumber)) {
+                successful = true;
+            } else {
+                attemptedNumbers.Add(attemptingNumber);
+            }
+        }
+
+        return true;
+    }
+
+    bool AssignCounterLocation(Customer customer, int index)
+    {
+        if (!usedWaitLocations[index]) {
+            if (customer.assignedWaitIndex >= 0) { // customer had a different location assigned to them
+                usedWaitLocations[customer.assignedWaitIndex] = false;
+            }
+
+            usedWaitLocations[index] = true;
+            customer.assignedWaitIndex = index;
+            customer.SetMoveTarget(customerWaitLocations[index]);
+            return true;
+        }
+
+        return false;
+    }
+
+    void AssignLeavingLocation(Customer customer)
+    {
+        AssignLeavingLocation(customer, Random.Range(0, customerLeaveLocations.Length));
+    }
+
+    void AssignLeavingLocation(Customer customer, int index)
+    {
+        if (!customer.leaving && customer.assignedWaitIndex >= 0) { // customer had a location assigned at the counter
+            usedWaitLocations[customer.assignedWaitIndex] = false;
+        }
+
+        customer.leaving = true;
+        customer.SetMoveTarget(customerLeaveLocations[index]);
+    }
+    #endregion
+
+    #region Boxes
     /// <summary>
     /// Checks all customers currently waiting and outputs the first customer with a matching request.
     /// </summary>
@@ -165,6 +230,17 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
+    public void AddPreparedBox(Box box)
+    {
+        if (!preparedBoxes.Contains(box)) preparedBoxes.Add(box);
+    }
+
+    public void RemovePreparedBox(Box box)
+    {
+        preparedBoxes.Remove(box);
+    }
+    #endregion
+
     /// <summary>
     /// Returns a score based on how many items were correct and how many were unnecessary.
     /// </summary>
@@ -175,16 +251,6 @@ public class GameManager : MonoBehaviour
     {
         float output = correctItems * 50 - unnecessaryItems * 60;
         return output;
-    }
-
-    public void AddPreparedBox(Box box)
-    {
-        if (!preparedBoxes.Contains(box)) preparedBoxes.Add(box);
-    }
-
-    public void RemovePreparedBox(Box box)
-    {
-        preparedBoxes.Remove(box);
     }
     #endregion
 
@@ -205,7 +271,7 @@ public class GameManager : MonoBehaviour
 
     void OnApplicationQuit()
     {
-        FileSystem.SaveFile("scores.txt", scoreboard);
+        if (scoreboard != null) FileSystem.SaveFile("scores.txt", scoreboard);
     }
     #endregion
     #endregion

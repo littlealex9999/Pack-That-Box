@@ -11,6 +11,9 @@ public class Customer : MonoBehaviour
 
     NavMeshAgent agent;
 
+    [HideInInspector] public int assignedWaitIndex = -1;
+    [HideInInspector] public bool leaving = false;
+
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -18,7 +21,9 @@ public class Customer : MonoBehaviour
 
     void Update()
     {
-        
+        if (leaving && agent.pathStatus == NavMeshPathStatus.PathComplete && agent.remainingDistance <= agent.stoppingDistance) {
+            Destroy(gameObject);
+        }   
     }
 
     public void AssignItems(List<PackItem> items)

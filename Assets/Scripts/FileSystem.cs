@@ -89,7 +89,6 @@ public class FileSystem
             }
 
             score = new Score(true, scoresValues);
-
             CloseSystem(br, s);
             return true;
         }
