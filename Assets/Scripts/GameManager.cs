@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
 
     GameState state = GameState.Menu;
 
+    [SerializeField] Score scoreboard;
     float score;
 
     [SerializeField] float minutesToGameEnd;
@@ -35,14 +36,21 @@ public class GameManager : MonoBehaviour
     #region Access Properties
     public GameState currentGameState { get { return state; } }
     public float remainingTime { get { return timer; } }
+    public float currentScore { get { return score; } }
     #endregion
 
     #region Functions
     #region Unity
     void Start()
     {
+        // instance setup
         if (instance == null) instance = this;
         else Destroy(this);
+
+        // score setup
+        if (FileSystem.LoadFile("scores.txt", out Score loadedScores)) {
+            scoreboard = loadedScores;
+        }
 
         StartGame(); // just a debug measure to actually get gameplay happening
     }
@@ -63,9 +71,10 @@ public class GameManager : MonoBehaviour
                 }
 
                 foreach (Box b in preparedBoxes) {
-                    if (CheckBoxDone(b, out Customer happyCustomer)) {
+                    if (CheckBoxDone(b, out Customer happyCustomer, out float scoreChange)) {
                         Destroy(b.gameObject);
-                        Destroy(happyCustomer.gameObject);
+                        RemoveCustomer(happyCustomer);
+                        score += scoreChange;
                     }
                 }
                 break;
@@ -93,40 +102,79 @@ public class GameManager : MonoBehaviour
         newCustomer.SetMoveTarget(customerWaitLocation);
     }
 
-    bool CheckBoxDone(Box box, out Customer targetCustomer)
+    public void RemoveCustomer(Customer customer)
+    {
+        currentCustomers.Remove(customer);
+        Destroy(customer.gameObject); // for prototype; this should have the customer leave eventually
+    }
+
+    /// <summary>
+    /// Checks all customers currently waiting and outputs the first customer with a matching request.
+    /// </summary>
+    /// <param name="box"></param>
+    /// <param name="customer"></param>
+    /// <returns></returns>
+    bool CheckBoxDone(Box box, out Customer customer, out float score)
     {
         foreach (Customer c in currentCustomers) {
-            List<int> usedItems = new List<int>();
-
-            for (int i = 0; i < c.items.Count; ++i) {
-                bool itemFound = false;
-
-                for (int j = 0; j < box.itemsInBox.Count; ++j) {
-                    if (usedItems.Contains(j)) continue;
-
-                    if (c.items[i].itemID == box.itemsInBox[j].itemID) {
-                        itemFound = true;
-                        usedItems.Add(j); // don't use the same object twice for checking if we have everything
-
-                        break;
-                    }
-                }
-
-                if (!itemFound) break; // we are missing one of the items meant to be in the box
-            }
-
-            if (usedItems.Count >= c.items.Count) { // we have all the items the customer wants
-                targetCustomer = c;
-                int unnecessaryItems = box.itemsInBox.Count - usedItems.Count;
-
-                // calculate score
-
+            if (CheckBoxDone(box, c, out score)) {
+                customer = c;
                 return true;
             }
         }
 
-        targetCustomer = null;
+        customer = null;
+        score = 0.0f;
         return false;
+    }
+
+    /// <summary>
+    /// Checks the given customer for if they have all their requested items or not. Outputs a score based on how many items are correct.
+    /// </summary>
+    /// <param name="box"></param>
+    /// <param name="customer"></param>
+    /// <param name="score"></param>
+    /// <returns></returns>
+    bool CheckBoxDone(Box box, Customer customer, out float score)
+    {
+        List<int> usedItems = new List<int>();
+
+        for (int i = 0; i < customer.items.Count; ++i) {
+            bool itemFound = false;
+
+            for (int j = 0; j < box.itemsInBox.Count; ++j) {
+                if (usedItems.Contains(j)) continue;
+
+                if (customer.items[i].itemID == box.itemsInBox[j].itemID) {
+                    itemFound = true;
+                    usedItems.Add(j); // don't use the same object twice for checking if we have everything
+
+                    break;
+                }
+            }
+
+            if (!itemFound) break; // we are missing one of the items meant to be in the box
+        }
+
+        score = CalculateScore(usedItems.Count, box.itemsInBox.Count - usedItems.Count);
+
+        if (usedItems.Count >= customer.items.Count) { // we have all the items the customer wants
+            return true;
+        }
+        
+        return false;
+    }
+
+    /// <summary>
+    /// Returns a score based on how many items were correct and how many were unnecessary.
+    /// </summary>
+    /// <param name="customer"></param>
+    /// <param name="unnecessaryItems"></param>
+    /// <returns></returns>
+    float CalculateScore(int correctItems, int unnecessaryItems)
+    {
+        float output = correctItems * 50 - unnecessaryItems * 60;
+        return output;
     }
     #endregion
 
@@ -135,11 +183,19 @@ public class GameManager : MonoBehaviour
     {
         state = GameState.Playing;
         timer = minutesToGameEnd * 60; // turn to seconds
+        score = 0.0f;
     }
 
     void EndGame()
     {
         state = GameState.Menu;
+        scoreboard.AddScore(score);
+        score = 0;
+    }
+
+    void OnApplicationQuit()
+    {
+        FileSystem.SaveFile("scores.txt", scoreboard);
     }
     #endregion
     #endregion
