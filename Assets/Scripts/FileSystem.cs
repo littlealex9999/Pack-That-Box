@@ -72,6 +72,7 @@ public class FileSystem
         bw.Write(score.Length);
         for (int i = 0; i < score.Length; ++i) {
             bw.Write(score[i]);
+            Debug.Log(score[i]);
         }
 
         CloseSystem(bw, s);
@@ -86,10 +87,10 @@ public class FileSystem
 
             for (int i = 0; i < scoresValues.Length; ++i) {
                 scoresValues[i] = br.ReadSingle();
+                Debug.Log(scoresValues[i]);
             }
 
             score = new Score(true, scoresValues);
-
             CloseSystem(br, s);
             return true;
         }
