@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 
     public enum GameState
     {
-        Menu,
+        Menu = default,
         Playing,
     }
 
@@ -34,6 +34,9 @@ public class GameManager : MonoBehaviour
 
     List<Customer> currentCustomers = new List<Customer>();
     [HideInInspector] public List<Box> preparedBoxes = new List<Box>();
+
+    [Header("Main Menu"), SerializeField] GameObject[] mainMenuUI;
+    [SerializeField] GameObject[] playtimeUI;
     #endregion
 
     #region Access Properties
@@ -80,8 +83,7 @@ public class GameManager : MonoBehaviour
 
                 for (int i = 0; i < preparedBoxes.Count; ++i) {
                     if (CheckBoxDone(preparedBoxes[i], out Customer happyCustomer, out float scoreChange)) {
-                        Destroy(preparedBoxes[i].gameObject);
-                        RemovePreparedBox(preparedBoxes[i]);
+                        Destroy(preparedBoxes[i].gameObject); // onDestroy on boxes removes them from preparedBoxes
                         --i; // our list is smaller, so we have to step back to ensure we check all elements
 
                         RemoveCustomer(happyCustomer);
@@ -108,8 +110,6 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < itemsPerPerson; ++i) {
             // add random items to our list
             newCustomerItems.Add(requestableObjects[Random.Range(0, requestableObjects.Length)].GetComponent<PackItem>());
-
-            Debug.Log(newCustomerItems[i].itemName); // for debug purposes
         }
 
         AssignCounterLocation(newCustomer);
@@ -187,6 +187,8 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     bool CheckBoxDone(Box box, out Customer customer, out float score)
     {
+        box.ValidateItems();
+
         foreach (Customer c in currentCustomers) {
             if (CheckBoxDone(box, c, out score)) {
                 customer = c;
@@ -261,23 +263,64 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Gamestate
-    void StartGame()
+    public void StartGame()
     {
         state = GameState.Playing;
         timer = minutesToGameEnd * 60; // turn to seconds
         score = 0.0f;
+
+        SetMenuUI(state);
     }
 
-    void EndGame()
+    public void EndGame()
     {
         state = GameState.Menu;
         scoreboard.AddScore(score);
         score = 0;
+
+        for (int i = 0; i < preparedBoxes.Count; ++i) {
+            RemoveCustomer(currentCustomers[i]);
+            Destroy(preparedBoxes[i].gameObject); // destroying a box removes it from preparedBoxes
+            --i;
+        }
+
+        SetMenuUI(state);
+    }
+
+    void SetMenuUI(GameState gs)
+    {
+        bool mainMenuActive = true;
+        switch (gs) {
+            case GameState.Menu:
+                mainMenuActive = true;
+                break;
+            case GameState.Playing:
+                mainMenuActive = false;
+                break;
+        }
+
+        foreach (GameObject go in mainMenuUI) {
+            go.SetActive(mainMenuActive);
+        }
+
+        foreach (GameObject go in playtimeUI) {
+            go.SetActive(!mainMenuActive);
+        }
     }
 
     void OnApplicationQuit()
     {
         if (scoreboard != null) FileSystem.SaveFile("scores.txt", scoreboard);
+    }
+    #endregion
+
+    #region Cheats
+    [ContextMenu("Satisfy First Customer")]
+    void CheatCompleteCustomer()
+    {
+        if (instance != null && currentCustomers.Count > 0) {
+            RemoveCustomer(currentCustomers[0]);
+        }
     }
     #endregion
     #endregion
