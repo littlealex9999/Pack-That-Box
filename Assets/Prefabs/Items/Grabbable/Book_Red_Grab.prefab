@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 1485693055030887370}
   - component: {fileID: 4471820393572923328}
   - component: {fileID: 7433534418474939121}
+  - component: {fileID: 9208242659270329626}
   m_Layer: 0
   m_Name: Book_Red_Grab
   m_TagString: Item
@@ -263,3 +264,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.56923276, y: 0.68789834, z: 0.05397461}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &9208242659270329626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3629667969504126168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f927423649df14c45b8ed0c0abd01c2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: 3
+  name: Red Book

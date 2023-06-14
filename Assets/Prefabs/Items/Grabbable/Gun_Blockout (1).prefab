@@ -541,6 +541,7 @@ GameObject:
   - component: {fileID: 3931646763650695828}
   - component: {fileID: 2288296230976807935}
   - component: {fileID: 7063145795566471451}
+  - component: {fileID: -3936487126975211360}
   m_Layer: 0
   m_Name: Gun_Blockout (1)
   m_TagString: Item
@@ -715,6 +716,20 @@ MonoBehaviour:
   m_ForceGravityOnDetach: 0
   m_RetainTransformParent: 1
   m_AttachPointCompatibilityMode: 0
+--- !u!114 &-3936487126975211360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8073659848065136702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f927423649df14c45b8ed0c0abd01c2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: 12
+  name: Handgun
 --- !u!1 &8435297717769560124
 GameObject:
   m_ObjectHideFlags: 0

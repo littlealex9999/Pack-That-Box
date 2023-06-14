@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Item
   - Box
+  - Deletable
   layers:
   - Default
   - TransparentFX
