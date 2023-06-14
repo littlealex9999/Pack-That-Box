@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class GameManager : MonoBehaviour
 {
@@ -43,6 +44,7 @@ public class GameManager : MonoBehaviour
     public GameState currentGameState { get { return state; } }
     public float remainingTime { get { return timer; } }
     public float currentScore { get { return score; } }
+    public Score currentScoreboard { get { return scoreboard; } }
     public List<Customer> customers { get { return currentCustomers; } }
     #endregion
 
@@ -311,6 +313,18 @@ public class GameManager : MonoBehaviour
     void OnApplicationQuit()
     {
         if (scoreboard != null) FileSystem.SaveFile("scores.txt", scoreboard);
+    }
+    #endregion
+
+    #region Helpers
+    public void SetObjectLayerGrabbed(SelectEnterEventArgs args)
+    {
+        args.interactableObject.transform.gameObject.layer = LayerMask.NameToLayer("Grabbed");
+    }
+
+    public void SetObjectLayerDefault(SelectExitEventArgs args)
+    {
+        args.interactableObject.transform.gameObject.layer = LayerMask.NameToLayer("Default");
     }
     #endregion
 

@@ -88,7 +88,9 @@ public class FileSystem
                 scoresValues[i] = br.ReadSingle();
             }
 
-            score = new Score(true, scoresValues);
+            score = ScriptableObject.CreateInstance<Score>();
+            score.Initialise(scoresValues);
+
             CloseSystem(br, s);
             return true;
         }

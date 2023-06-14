@@ -8,16 +8,9 @@ public class Score : ScriptableObject
     [SerializeField] float[] scores = new float[10];
     public int Length { get { return scores.Length; } }
 
-    bool loadedProperly;
-    public bool Loaded { get { return loadedProperly; } }
-
-    public Score() { }
-    public Score(bool loaded, float[] presetScores) 
+    public void Initialise(float[] scores)
     {
-        if (loaded) {
-            loadedProperly = loaded;
-            scores = presetScores;
-        }
+        this.scores = scores;
     }
 
     public void AddScore(float score)
