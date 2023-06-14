@@ -15,6 +15,7 @@ public class Customer : MonoBehaviour
     [HideInInspector] public int assignedWaitIndex = -1;
     [HideInInspector] public bool leaving = false;
 
+    Transform listSpawnLocation;
     GameObject itemRequestList;
     bool spawnedList;
 
@@ -39,14 +40,15 @@ public class Customer : MonoBehaviour
         requestedItems = items;
     }
 
-    public void SetItemRequestList(GameObject go)
+    public void SetItemRequestList(GameObject go, Transform spawnLocation)
     {
         itemRequestList = go;
+        listSpawnLocation = spawnLocation;
     }
 
     void CreateItemList()
     {
-        itemRequestList = Instantiate(itemRequestList, transform.position, Quaternion.identity);
+        itemRequestList = Instantiate(itemRequestList, listSpawnLocation.position, listSpawnLocation.rotation);
         TextMeshProUGUI text = itemRequestList.GetComponentInChildren<TextMeshProUGUI>();
 
         if (text != null && requestedItems.Count > 0) {
