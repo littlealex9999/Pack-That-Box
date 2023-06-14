@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
             usedWaitLocations.Add(i, false);
         }
 
-        StartGame(); // just a debug measure to actually get gameplay happening
+        SetMenuUI(state);
     }
 
     void Update()
