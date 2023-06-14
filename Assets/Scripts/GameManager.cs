@@ -109,7 +109,7 @@ public class GameManager : MonoBehaviour
             // add random items to our list
             newCustomerItems.Add(requestableObjects[Random.Range(0, requestableObjects.Length)].GetComponent<PackItem>());
 
-            Debug.Log(newCustomerItems[i].itemID); // for debug purposes
+            Debug.Log(newCustomerItems[i].itemName); // for debug purposes
         }
 
         newCustomer.AssignItems(newCustomerItems);

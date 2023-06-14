@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -27,7 +28,7 @@ public class Customer : MonoBehaviour
         if (leaving && CheckDestinationReached()) {
             Destroy(gameObject);
         } else if (!spawnedList && CheckDestinationReached()) {
-            itemRequestList = Instantiate(itemRequestList, transform.position, Quaternion.identity);
+            CreateItemList();
             spawnedList = true;
         }
     }
@@ -41,6 +42,21 @@ public class Customer : MonoBehaviour
     public void SetItemRequestList(GameObject go)
     {
         itemRequestList = go;
+    }
+
+    void CreateItemList()
+    {
+        itemRequestList = Instantiate(itemRequestList, transform.position, Quaternion.identity);
+        TextMeshProUGUI text = itemRequestList.GetComponentInChildren<TextMeshProUGUI>();
+
+        if (text != null && requestedItems.Count > 0) {
+            text.text = requestedItems[0].itemName;
+
+            for (int i = 1; i < requestedItems.Count; ++i) {
+                text = Instantiate(text.gameObject, text.gameObject.transform.parent).GetComponent<TextMeshProUGUI>();
+                text.text = requestedItems[i].itemName;
+            }
+        }
     }
     #endregion
 
