@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     float timer;
 
     [Header("Locations"), SerializeField] Transform[] customerSpawnLocations;
-    [SerializeField] Transform[] customerWaitLocations;
+    [SerializeField] public List<WaitingLocation> customerWaitLocations = new List<WaitingLocation>();
     [SerializeField] Transform[] customerLeaveLocations;
     Dictionary<int, bool> usedWaitLocations = new Dictionary<int, bool>();
 
@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
             scoreboard = loadedScores;
         }
 
-        for (int i = 0; i < customerWaitLocations.Length; ++i) {
+        for (int i = 0; i < customerWaitLocations.Count; ++i) {
             usedWaitLocations.Add(i, false);
         }
 
@@ -112,9 +112,10 @@ public class GameManager : MonoBehaviour
             Debug.Log(newCustomerItems[i].itemName); // for debug purposes
         }
 
-        newCustomer.AssignItems(newCustomerItems);
-        newCustomer.SetItemRequestList(customerItemRequestList);
         AssignCounterLocation(newCustomer);
+
+        newCustomer.AssignItems(newCustomerItems);
+        newCustomer.SetItemRequestList(customerItemRequestList, customerWaitLocations[newCustomer.assignedWaitIndex].listDropLocation);
     }
 
     public void RemoveCustomer(Customer customer)
@@ -130,10 +131,10 @@ public class GameManager : MonoBehaviour
         List<int> attemptedNumbers = new List<int>();
 
         while (!successful) {
-            int attemptingNumber = Random.Range(0, customerWaitLocations.Length);
+            int attemptingNumber = Random.Range(0, customerWaitLocations.Count);
 
-            if (attemptedNumbers.Count >= customerWaitLocations.Length) return false; // no available positions
-            if (attemptedNumbers.Contains(attemptingNumber)) attemptingNumber = (attemptingNumber + 1) % customerWaitLocations.Length;
+            if (attemptedNumbers.Count >= customerWaitLocations.Count) return false; // no available positions
+            if (attemptedNumbers.Contains(attemptingNumber)) attemptingNumber = (attemptingNumber + 1) % customerWaitLocations.Count;
 
             if (AssignCounterLocation(customer, attemptingNumber)) {
                 successful = true;
@@ -154,7 +155,7 @@ public class GameManager : MonoBehaviour
 
             usedWaitLocations[index] = true;
             customer.assignedWaitIndex = index;
-            customer.SetMoveTarget(customerWaitLocations[index]);
+            customer.SetMoveTarget(customerWaitLocations[index].customerWaitLocation);
             return true;
         }
 
