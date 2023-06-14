@@ -108,8 +108,6 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < itemsPerPerson; ++i) {
             // add random items to our list
             newCustomerItems.Add(requestableObjects[Random.Range(0, requestableObjects.Length)].GetComponent<PackItem>());
-
-            Debug.Log(newCustomerItems[i].itemName); // for debug purposes
         }
 
         AssignCounterLocation(newCustomer);
@@ -187,6 +185,8 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     bool CheckBoxDone(Box box, out Customer customer, out float score)
     {
+        box.ValidateItems();
+
         foreach (Customer c in currentCustomers) {
             if (CheckBoxDone(box, c, out score)) {
                 customer = c;
@@ -278,6 +278,16 @@ public class GameManager : MonoBehaviour
     void OnApplicationQuit()
     {
         if (scoreboard != null) FileSystem.SaveFile("scores.txt", scoreboard);
+    }
+    #endregion
+
+    #region Cheats
+    [ContextMenu("Satisfy First Customer")]
+    void CheatCompleteCustomer()
+    {
+        if (instance != null && currentCustomers.Count > 0) {
+            RemoveCustomer(currentCustomers[0]);
+        }
     }
     #endregion
     #endregion
