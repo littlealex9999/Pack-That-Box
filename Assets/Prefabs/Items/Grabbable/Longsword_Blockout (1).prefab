@@ -13,7 +13,8 @@ GameObject:
   - component: {fileID: 6146791964868294279}
   - component: {fileID: 3763137479579023944}
   - component: {fileID: 768689286712101604}
-  - component: {fileID: 1951433368514338079}
+  - component: {fileID: -2221163582366094839}
+  - component: {fileID: -8163218353568391624}
   m_Layer: 0
   m_Name: Longsword_Blockout (1)
   m_TagString: Item
@@ -116,7 +117,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1951433368514338079
+--- !u!114 &-2221163582366094839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5642226147776042834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f927423649df14c45b8ed0c0abd01c2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: 15
+  name: Sword
+--- !u!114 &-8163218353568391624
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
