@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 1662176615}
   - component: {fileID: 1662176614}
   m_Layer: 0
-  m_Name: 001 (CUBE RED) (1)
+  m_Name: Debug Cube
   m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -113,6 +113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ID: 0
+  name: Debug Cube
 --- !u!54 &1662176615
 Rigidbody:
   m_ObjectHideFlags: 0

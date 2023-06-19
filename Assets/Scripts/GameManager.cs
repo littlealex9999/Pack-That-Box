@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class GameManager : MonoBehaviour
 
     public enum GameState
     {
-        Menu,
+        Menu = default,
         Playing,
     }
 
@@ -22,24 +23,29 @@ public class GameManager : MonoBehaviour
     [SerializeField] float minutesToGameEnd;
     float timer;
 
-    [SerializeField] Transform[] customerSpawnLocations;
-    [SerializeField] Transform[] customerWaitLocations;
+    [Header("Locations"), SerializeField] Transform[] customerSpawnLocations;
+    [SerializeField] public List<WaitingLocation> customerWaitLocations = new List<WaitingLocation>();
     [SerializeField] Transform[] customerLeaveLocations;
     Dictionary<int, bool> usedWaitLocations = new Dictionary<int, bool>();
 
-    [SerializeField] int itemsPerPerson = 3;
-
-    [SerializeField] GameObject[] customers;
+    [Header("Customers"), SerializeField] GameObject[] customerPresets;
     [SerializeField] GameObject[] requestableObjects;
+    [SerializeField] int itemsPerPerson = 3;
+    [SerializeField] GameObject customerItemRequestList;
 
     List<Customer> currentCustomers = new List<Customer>();
     [HideInInspector] public List<Box> preparedBoxes = new List<Box>();
+
+    [Header("Main Menu"), SerializeField] GameObject[] mainMenuUI;
+    [SerializeField] GameObject[] playtimeUI;
     #endregion
 
     #region Access Properties
     public GameState currentGameState { get { return state; } }
     public float remainingTime { get { return timer; } }
     public float currentScore { get { return score; } }
+    public Score currentScoreboard { get { return scoreboard; } }
+    public List<Customer> customers { get { return currentCustomers; } }
     #endregion
 
     #region Functions
@@ -55,7 +61,7 @@ public class GameManager : MonoBehaviour
             scoreboard = loadedScores;
         }
 
-        for (int i = 0; i < customerWaitLocations.Length; ++i) {
+        for (int i = 0; i < customerWaitLocations.Count; ++i) {
             usedWaitLocations.Add(i, false);
         }
 
@@ -79,8 +85,7 @@ public class GameManager : MonoBehaviour
 
                 for (int i = 0; i < preparedBoxes.Count; ++i) {
                     if (CheckBoxDone(preparedBoxes[i], out Customer happyCustomer, out float scoreChange)) {
-                        Destroy(preparedBoxes[i].gameObject);
-                        RemovePreparedBox(preparedBoxes[i]);
+                        Destroy(preparedBoxes[i].gameObject); // onDestroy on boxes removes them from preparedBoxes
                         --i; // our list is smaller, so we have to step back to ensure we check all elements
 
                         RemoveCustomer(happyCustomer);
@@ -99,7 +104,7 @@ public class GameManager : MonoBehaviour
         Vector3 chosenSpawnLocation = customerSpawnLocations[Random.Range(0, customerSpawnLocations.Length)].position;
 
         // create a random customer
-        Customer newCustomer = Instantiate(customers[Random.Range(0, customers.Length)], chosenSpawnLocation, Quaternion.identity).GetComponent<Customer>();
+        Customer newCustomer = Instantiate(customerPresets[Random.Range(0, customerPresets.Length)], chosenSpawnLocation, Quaternion.identity).GetComponent<Customer>();
         currentCustomers.Add(newCustomer);
 
         List<PackItem> newCustomerItems = new List<PackItem>();
@@ -107,12 +112,12 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < itemsPerPerson; ++i) {
             // add random items to our list
             newCustomerItems.Add(requestableObjects[Random.Range(0, requestableObjects.Length)].GetComponent<PackItem>());
-
-            Debug.Log(newCustomerItems[i].itemID); // for debug purposes
         }
 
-        newCustomer.AssignItems(newCustomerItems);
         AssignCounterLocation(newCustomer);
+
+        newCustomer.AssignItems(newCustomerItems);
+        newCustomer.SetItemRequestList(customerItemRequestList, customerWaitLocations[newCustomer.assignedWaitIndex].listDropLocation);
     }
 
     public void RemoveCustomer(Customer customer)
@@ -128,10 +133,10 @@ public class GameManager : MonoBehaviour
         List<int> attemptedNumbers = new List<int>();
 
         while (!successful) {
-            int attemptingNumber = Random.Range(0, customerWaitLocations.Length);
+            int attemptingNumber = Random.Range(0, customerWaitLocations.Count);
 
-            if (attemptedNumbers.Count >= customerWaitLocations.Length) return false; // no available positions
-            if (attemptedNumbers.Contains(attemptingNumber)) attemptingNumber = (attemptingNumber + 1) % customerWaitLocations.Length;
+            if (attemptedNumbers.Count >= customerWaitLocations.Count) return false; // no available positions
+            if (attemptedNumbers.Contains(attemptingNumber)) attemptingNumber = (attemptingNumber + 1) % customerWaitLocations.Count;
 
             if (AssignCounterLocation(customer, attemptingNumber)) {
                 successful = true;
@@ -152,7 +157,7 @@ public class GameManager : MonoBehaviour
 
             usedWaitLocations[index] = true;
             customer.assignedWaitIndex = index;
-            customer.SetMoveTarget(customerWaitLocations[index]);
+            customer.SetMoveTarget(customerWaitLocations[index].customerWaitLocation);
             return true;
         }
 
@@ -184,6 +189,8 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     bool CheckBoxDone(Box box, out Customer customer, out float score)
     {
+        box.ValidateItems();
+
         foreach (Customer c in currentCustomers) {
             if (CheckBoxDone(box, c, out score)) {
                 customer = c;
@@ -258,23 +265,76 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Gamestate
-    void StartGame()
+    public void StartGame()
     {
         state = GameState.Playing;
         timer = minutesToGameEnd * 60; // turn to seconds
         score = 0.0f;
+
+        SetMenuUI(state);
     }
 
-    void EndGame()
+    public void EndGame()
     {
         state = GameState.Menu;
         scoreboard.AddScore(score);
         score = 0;
+
+        for (int i = 0; i < preparedBoxes.Count; ++i) {
+            RemoveCustomer(currentCustomers[i]);
+            Destroy(preparedBoxes[i].gameObject); // destroying a box removes it from preparedBoxes
+            --i;
+        }
+
+        SetMenuUI(state);
+    }
+
+    void SetMenuUI(GameState gs)
+    {
+        bool mainMenuActive = true;
+        switch (gs) {
+            case GameState.Menu:
+                mainMenuActive = true;
+                break;
+            case GameState.Playing:
+                mainMenuActive = false;
+                break;
+        }
+
+        foreach (GameObject go in mainMenuUI) {
+            go.SetActive(mainMenuActive);
+        }
+
+        foreach (GameObject go in playtimeUI) {
+            go.SetActive(!mainMenuActive);
+        }
     }
 
     void OnApplicationQuit()
     {
         if (scoreboard != null) FileSystem.SaveFile("scores.txt", scoreboard);
+    }
+    #endregion
+
+    #region Helpers
+    public void SetObjectLayerGrabbed(SelectEnterEventArgs args)
+    {
+        args.interactableObject.transform.gameObject.layer = LayerMask.NameToLayer("Grabbed");
+    }
+
+    public void SetObjectLayerDefault(SelectExitEventArgs args)
+    {
+        args.interactableObject.transform.gameObject.layer = LayerMask.NameToLayer("Default");
+    }
+    #endregion
+
+    #region Cheats
+    [ContextMenu("Satisfy First Customer")]
+    void CheatCompleteCustomer()
+    {
+        if (instance != null && currentCustomers.Count > 0) {
+            RemoveCustomer(currentCustomers[0]);
+        }
     }
     #endregion
     #endregion
