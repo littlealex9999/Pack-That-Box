@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -24,6 +25,19 @@ public class Customer : MonoBehaviour
     float patience;
 
     Image patienceMeter;
+
+    [SerializeField] Transform headLocation;
+    [SerializeField] Transform earsLocation;
+    [SerializeField] Transform neckLocation;
+
+    public enum AccessoryTypes
+    {
+        Head,
+        Ears,
+        Neck,
+
+        Count
+    }
 
     void Awake()
     {
@@ -96,5 +110,28 @@ public class Customer : MonoBehaviour
     {
         startingPatience = time;
         patience = time;
+    }
+
+    public void AttachAccessories(GameObject[] accessories)
+    {
+        foreach (GameObject accessory in accessories) {
+            Transform target = GetAccessoryTransform(accessory.GetComponent<Accessory>().accessoryType); // get the target transform from the accessory type
+            if (target.childCount > 0) continue; // do not equip multiple accessories
+            Instantiate(accessory, target);
+        }
+    }
+
+    Transform GetAccessoryTransform(AccessoryTypes type)
+    {
+        switch (type) {
+            case AccessoryTypes.Head:
+                return headLocation;
+            case AccessoryTypes.Ears:
+                return earsLocation;
+            case AccessoryTypes.Neck:
+                return neckLocation;
+            default:
+                return null;
+        }
     }
 }

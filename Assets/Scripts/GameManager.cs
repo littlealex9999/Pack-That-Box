@@ -49,6 +49,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] int itemsPerPerson = 3;
     [SerializeField] GameObject customerItemRequestList;
 
+    [Header("Customer Accessories"), SerializeField] GameObject[] customerHeadAccessories;
+    [SerializeField] GameObject[] customerEarsAccessories;
+    [SerializeField] GameObject[] customerNeckAccessories;
+
     List<Customer> currentCustomers = new List<Customer>();
     [HideInInspector] public List<Box> preparedBoxes = new List<Box>();
 
@@ -186,6 +190,8 @@ public class GameManager : MonoBehaviour
         newCustomer.AssignItems(newCustomerItems);
         newCustomer.SetItemRequestList(customerItemRequestList, customerWaitLocations[newCustomer.assignedWaitIndex].listDropLocation);
         newCustomer.SetPatience(customerPatienceSeconds);
+
+        
     }
 
     public void RemoveCustomer(Customer customer, bool failed = false)
