@@ -29,10 +29,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] int maxStrikes = 3;
     int currentStrikes;
 
-    [SerializeField] float customerPatienceSeconds = 30;
-    [SerializeField] float customerSpawnTimeSeconds = 10;
+    [Header("Customer Difficulty"), SerializeField] float customerPatienceSeconds = 30;
+    [SerializeField] float customerSpawnTimeSecondsHigh = 10;
+    [SerializeField] float customerSpawnTimeSecondsLow = 5;
+    float customerSpawnTimeSeconds;
+
+    [SerializeField] float minutesToMaxDifficultyRamp = 3;
     float customerSpawnTimeBackupHelper;
     float customerSpawnTimeBackupHelperTimer;
+    [SerializeField] AnimationCurve customerSpawnTimeCurve;
 
     [Header("Locations"), SerializeField] Transform[] customerSpawnLocations;
     [SerializeField] public List<WaitingLocation> customerWaitLocations = new List<WaitingLocation>();
@@ -111,14 +116,12 @@ public class GameManager : MonoBehaviour
                 if (timer <= 0) EndGame(); // the game ends when time hits 0
 
                 // game logic
-                customerSpawnTimeBackupHelperTimer -= Time.deltaTime;
-                if (currentCustomers.Count == 0) { // ensures a single customer at all times
-                    CreateNewCustomer();
-                }
-                if (customerSpawnTimeBackupHelperTimer <= 0 && (int)(timer % customerSpawnTimeSeconds) == 0) {
-                    customerSpawnTimeBackupHelperTimer = customerSpawnTimeBackupHelper;
-                    CreateNewCustomer();
-                }
+
+                // difficulty ramp
+                customerSpawnTimeSeconds = EvaluateDifficultyRamp();
+                Debug.Log(customerSpawnTimeSeconds);
+
+                CustomerSpawningUpdate();
 
                 for (int i = 0; i < preparedBoxes.Count; ++i) {
                     if (CheckBoxDone(preparedBoxes[i], out Customer happyCustomer, out float scoreChange)) {
@@ -135,6 +138,31 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Gameplay & Flow
+    #region Gameplay Updates
+    float EvaluateDifficultyRamp()
+    {
+        float difficultyRampMaxTime = minutesToMaxDifficultyRamp * 60;
+        float gameEndTime = minutesToGameEnd * 60;
+        float difficulty =
+            customerSpawnTimeCurve.Evaluate((Mathf.Clamp(timer, difficultyRampMaxTime, gameEndTime) - difficultyRampMaxTime) / (gameEndTime - difficultyRampMaxTime));
+
+        return Mathf.Lerp(customerSpawnTimeSecondsHigh, customerSpawnTimeSecondsLow, difficulty);
+    }
+
+    void CustomerSpawningUpdate()
+    {
+        if (currentCustomers.Count == 0) { // ensures a single customer at all times
+            CreateNewCustomer();
+        }
+
+        customerSpawnTimeBackupHelperTimer -= Time.deltaTime;
+        if (customerSpawnTimeBackupHelperTimer <= 0 && (int)(timer % customerSpawnTimeSeconds) == 0) {
+            customerSpawnTimeBackupHelperTimer = customerSpawnTimeBackupHelper;
+            CreateNewCustomer();
+        }
+    }
+    #endregion
+
     #region Customers
     void CreateNewCustomer()
     {
@@ -337,7 +365,7 @@ public class GameManager : MonoBehaviour
         score = 0.0f;
         currentStrikes = 0;
 
-        customerSpawnTimeBackupHelper = customerSpawnTimeSeconds / 2;
+        customerSpawnTimeBackupHelper = customerSpawnTimeSecondsHigh / 2;
         customerSpawnTimeBackupHelperTimer = customerSpawnTimeBackupHelper;
 
         foreach(Image i in strikesImages) {
@@ -428,6 +456,14 @@ public class GameManager : MonoBehaviour
     {
         if (instance != null && currentCustomers.Count > 0) {
             RemoveCustomer(currentCustomers[0]);
+        }
+    }
+
+    [ContextMenu("Spawn New Customer")]
+    void CheatSpawnCustomer()
+    {
+        if (instance != null && AnyAvailableLocations()) {
+            CreateNewCustomer();
         }
     }
     #endregion
