@@ -28,6 +28,7 @@ public class Customer : MonoBehaviour
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        patienceMeter = GetComponentInChildren<Image>();
     }
 
     void Update()
@@ -39,6 +40,11 @@ public class Customer : MonoBehaviour
             spawnedList = true;
         } else if (spawnedList) { // we only spawn a list when we reach the counter, so this check is essentially ensuring we are at the counter
             patience -= Time.deltaTime;
+            if (patienceMeter) patienceMeter.fillAmount = patience / startingPatience;
+
+            gameObject.transform.LookAt(Camera.main.transform);
+            transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, transform.eulerAngles.z);
+
             if (patience <= 0) {
                 GameManager.instance.RemoveCustomer(this, true);
                 spawnedList = false; // ensures this block only executes once
