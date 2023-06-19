@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 2762616341077752121}
   - component: {fileID: 7396931009734037762}
   - component: {fileID: 5834018603121977529}
+  - component: {fileID: 7654361341618392399}
   m_Layer: 0
   m_Name: Cup_Grab
   m_TagString: Item
@@ -262,3 +263,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.14956239, y: 0.17847343, z: 0.14644165}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7654361341618392399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6636963314122407189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f927423649df14c45b8ed0c0abd01c2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: 7
+  name: Cup
