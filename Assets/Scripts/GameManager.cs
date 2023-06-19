@@ -123,7 +123,6 @@ public class GameManager : MonoBehaviour
 
                 // difficulty ramp
                 customerSpawnTimeSeconds = EvaluateDifficultyRamp();
-                Debug.Log(customerSpawnTimeSeconds);
 
                 CustomerSpawningUpdate();
 
@@ -364,8 +363,12 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Gamestate
+    public static bool canStartGame { get { return instance != null && instance.state == GameState.Menu; } }
+
     public void StartGame()
     {
+        if (!canStartGame) return;
+
         state = GameState.Playing;
         timer = minutesToGameEnd * 60; // turn to seconds
         score = 0.0f;
@@ -454,7 +457,7 @@ public class GameManager : MonoBehaviour
     [ContextMenu("Start Game")]
     void CheatStartGame()
     {
-        if (instance != null && state != GameState.Playing) StartGame();
+        StartGame();
     }
 
     [ContextMenu("Satisfy First Customer")]
