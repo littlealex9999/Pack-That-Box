@@ -44,8 +44,8 @@ GameObject:
   - component: {fileID: 6324278204789439863}
   - component: {fileID: 1623346404440524951}
   - component: {fileID: 4626932231874730536}
-  - component: {fileID: 2080350914888713822}
   - component: {fileID: 2944352936306352377}
+  - component: {fileID: 4087007224715941670}
   m_Layer: 0
   m_Name: Bread_Blockout (1)
   m_TagString: Item
@@ -149,7 +149,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2080350914888713822
+--- !u!114 &2944352936306352377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5531728714667629730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f927423649df14c45b8ed0c0abd01c2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: 4
+  name: Bread
+--- !u!114 &4087007224715941670
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -227,7 +241,7 @@ MonoBehaviour:
   m_OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
-  m_AttachTransform: {fileID: 4815355821186427849}
+  m_AttachTransform: {fileID: 0}
   m_AttachEaseInTime: 0.15
   m_MovementType: 2
   m_VelocityDamping: 1
@@ -264,17 +278,3 @@ MonoBehaviour:
   m_ForceGravityOnDetach: 0
   m_RetainTransformParent: 1
   m_AttachPointCompatibilityMode: 0
---- !u!114 &2944352936306352377
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5531728714667629730}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f927423649df14c45b8ed0c0abd01c2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ID: 4
-  name: Bread

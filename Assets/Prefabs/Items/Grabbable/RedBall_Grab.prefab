@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 1287708383050162922}
   - component: {fileID: 3907484805212640800}
   - component: {fileID: 8180045404461241520}
-  - component: {fileID: 8664146135665242918}
   - component: {fileID: 8319684888227087100}
   - component: {fileID: -8517151748297858121}
+  - component: {fileID: 3609426557437426939}
   m_Layer: 0
   m_Name: RedBall_Grab
   m_TagString: Item
@@ -104,7 +104,34 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &8664146135665242918
+--- !u!135 &8319684888227087100
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3259146848325089269}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.070937574
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-8517151748297858121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3259146848325089269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f927423649df14c45b8ed0c0abd01c2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: 16
+  name: Red Ball
+--- !u!114 &3609426557437426939
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -182,7 +209,7 @@ MonoBehaviour:
   m_OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
-  m_AttachTransform: {fileID: 4819048027201786115}
+  m_AttachTransform: {fileID: 0}
   m_AttachEaseInTime: 0.15
   m_MovementType: 2
   m_VelocityDamping: 1
@@ -219,33 +246,6 @@ MonoBehaviour:
   m_ForceGravityOnDetach: 0
   m_RetainTransformParent: 1
   m_AttachPointCompatibilityMode: 0
---- !u!135 &8319684888227087100
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3259146848325089269}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.070937574
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-8517151748297858121
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3259146848325089269}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f927423649df14c45b8ed0c0abd01c2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ID: 16
-  name: Red Ball
 --- !u!1 &3673345762461710242
 GameObject:
   m_ObjectHideFlags: 0

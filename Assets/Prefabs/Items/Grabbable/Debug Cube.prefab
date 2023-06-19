@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6015803461563768258}
   - component: {fileID: 429765063880174390}
   - component: {fileID: 1662176615}
-  - component: {fileID: 1662176614}
+  - component: {fileID: 276488406617752726}
   m_Layer: 0
   m_Name: Debug Cube
   m_TagString: Item
@@ -130,7 +130,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1662176614
+--- !u!114 &276488406617752726
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

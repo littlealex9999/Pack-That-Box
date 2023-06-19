@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1585347570655259201}
   - component: {fileID: 126624803909924550}
   - component: {fileID: 126624803909924554}
-  - component: {fileID: 126624803909924551}
+  - component: {fileID: 4084807767662761798}
   m_Layer: 0
   m_Name: PaperList
   m_TagString: Deletable
@@ -121,7 +121,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.99999994, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &126624803909924551
+--- !u!114 &4084807767662761798
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

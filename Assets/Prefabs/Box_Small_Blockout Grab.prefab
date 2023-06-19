@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 4797110503211211619}
   - component: {fileID: 5470914718617603728}
   - component: {fileID: 5498798278148446578}
-  - component: {fileID: 4894577287585518335}
+  - component: {fileID: 4819558616528718227}
   m_Layer: 0
   m_Name: Box_Small_Blockout Grab
   m_TagString: Box
@@ -199,7 +199,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.69, y: -0.02, z: 0.63}
   m_Center: {x: 0, y: -0.29, z: -0.03}
---- !u!114 &4894577287585518335
+--- !u!114 &4819558616528718227
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

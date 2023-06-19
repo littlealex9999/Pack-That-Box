@@ -140,7 +140,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 17
   name: Top Hat
---- !u!114 &2653453032967813076
+--- !u!114 &-6150248571316097136
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -218,7 +218,7 @@ MonoBehaviour:
   m_OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
-  m_AttachTransform: {fileID: 8941370159709047167}
+  m_AttachTransform: {fileID: 0}
   m_AttachEaseInTime: 0.15
   m_MovementType: 2
   m_VelocityDamping: 1

@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 4459519269952576173}
   - component: {fileID: 2203534756617935883}
   - component: {fileID: 1321783797110656079}
-  - component: {fileID: 8841294545616510418}
+  - component: {fileID: 2307323313235872585}
   m_Layer: 0
   m_Name: Box_Small_Grabbable
   m_TagString: Box
@@ -199,7 +199,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.69, y: -0.02, z: 0.63}
   m_Center: {x: 0, y: -0.29, z: -0.03}
---- !u!114 &8841294545616510418
+--- !u!114 &2307323313235872585
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
