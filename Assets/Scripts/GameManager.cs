@@ -1,7 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,11 +20,16 @@ public class GameManager : MonoBehaviour
 
     GameState state = GameState.Menu;
 
-    [SerializeField] Score scoreboard;
+    [Header("Main Game Settings"), SerializeField] Score scoreboard;
     float score;
 
     [SerializeField] float minutesToGameEnd;
     float timer;
+
+    [SerializeField] int maxStrikes = 3;
+    int currentStrikes;
+
+    [SerializeField] float customerPatienceSeconds = 30;
 
     [Header("Locations"), SerializeField] Transform[] customerSpawnLocations;
     [SerializeField] public List<WaitingLocation> customerWaitLocations = new List<WaitingLocation>();
@@ -35,14 +44,19 @@ public class GameManager : MonoBehaviour
     List<Customer> currentCustomers = new List<Customer>();
     [HideInInspector] public List<Box> preparedBoxes = new List<Box>();
 
-    [Header("Main Menu"), SerializeField] GameObject[] mainMenuUI;
-    [SerializeField] GameObject[] playtimeUI;
+    [Header("UI"), SerializeField] GameObject[] mainMenuUI;
+    [SerializeField] List<GameObject> playtimeUI = new List<GameObject>();
+    [Space, SerializeField] GameObject strikesUI;
+    [SerializeField] Color strikeFailColor = Color.red;
+
+    Image[] strikesImages;
     #endregion
 
     #region Access Properties
     public GameState currentGameState { get { return state; } }
     public float remainingTime { get { return timer; } }
     public float currentScore { get { return score; } }
+    public Score currentScoreboard { get { return scoreboard; } }
     public List<Customer> customers { get { return currentCustomers; } }
     #endregion
 
@@ -61,6 +75,22 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < customerWaitLocations.Count; ++i) {
             usedWaitLocations.Add(i, false);
+        }
+
+        // ui setup
+        if (!playtimeUI.Contains(strikesUI)) {
+            playtimeUI.Add(strikesUI);
+        }
+
+        strikesImages = new Image[maxStrikes];
+        Image[] foundStrikesImages = strikesUI.GetComponentsInChildren<Image>();
+
+        for (int i = 0; i < strikesImages.Length; ++i) {
+            if (i >= foundStrikesImages.Length) {
+                strikesImages[i] = Instantiate(strikesImages[0], strikesImages[0].transform.parent);
+            } else {
+                strikesImages[i] = foundStrikesImages[i];
+            }
         }
 
         SetMenuUI(state);
@@ -116,12 +146,15 @@ public class GameManager : MonoBehaviour
 
         newCustomer.AssignItems(newCustomerItems);
         newCustomer.SetItemRequestList(customerItemRequestList, customerWaitLocations[newCustomer.assignedWaitIndex].listDropLocation);
+        newCustomer.SetPatience(customerPatienceSeconds);
     }
 
-    public void RemoveCustomer(Customer customer)
+    public void RemoveCustomer(Customer customer, bool failed = false)
     {
         currentCustomers.Remove(customer);
         AssignLeavingLocation(customer);
+
+        if (failed) AddFail();
     }
 
     bool AssignCounterLocation(Customer customer)
@@ -249,6 +282,15 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
+    #region Utility
+    void AddFail()
+    {
+        strikesImages[currentStrikes].color = strikeFailColor;
+
+        ++currentStrikes;
+        CheckGameFail();
+    }
+
     /// <summary>
     /// Returns a score based on how many items were correct and how many were unnecessary.
     /// </summary>
@@ -261,6 +303,7 @@ public class GameManager : MonoBehaviour
         return output;
     }
     #endregion
+    #endregion
 
     #region Gamestate
     public void StartGame()
@@ -268,6 +311,7 @@ public class GameManager : MonoBehaviour
         state = GameState.Playing;
         timer = minutesToGameEnd * 60; // turn to seconds
         score = 0.0f;
+        currentStrikes = 0;
 
         SetMenuUI(state);
     }
@@ -278,10 +322,11 @@ public class GameManager : MonoBehaviour
         scoreboard.AddScore(score);
         score = 0;
 
-        for (int i = 0; i < preparedBoxes.Count; ++i) {
+        for (int i = currentCustomers.Count - 1; i >= 0; --i) {
             RemoveCustomer(currentCustomers[i]);
+        }
+        for (int i = 0; i < preparedBoxes.Count;) {
             Destroy(preparedBoxes[i].gameObject); // destroying a box removes it from preparedBoxes
-            --i;
         }
 
         SetMenuUI(state);
@@ -308,13 +353,45 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Returns true if a fail condition has been met
+    /// </summary>
+    /// <returns></returns>
+    bool CheckGameFail()
+    {
+        if (currentStrikes >= maxStrikes) {
+            EndGame();
+            return true;
+        }
+
+        return false;
+    }
+
     void OnApplicationQuit()
     {
         if (scoreboard != null) FileSystem.SaveFile("scores.txt", scoreboard);
     }
     #endregion
 
+    #region Helpers
+    public void SetObjectLayerGrabbed(SelectEnterEventArgs args)
+    {
+        args.interactableObject.transform.gameObject.layer = LayerMask.NameToLayer("Grabbed");
+    }
+
+    public void SetObjectLayerDefault(SelectExitEventArgs args)
+    {
+        args.interactableObject.transform.gameObject.layer = LayerMask.NameToLayer("Default");
+    }
+    #endregion
+
     #region Cheats
+    [ContextMenu("Start Game")]
+    void CheatStartGame()
+    {
+        if (instance != null && state != GameState.Playing) StartGame();
+    }
+
     [ContextMenu("Satisfy First Customer")]
     void CheatCompleteCustomer()
     {

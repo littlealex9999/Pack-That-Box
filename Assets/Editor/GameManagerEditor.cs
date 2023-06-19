@@ -11,8 +11,14 @@ public class GameManagerEditor : Editor
         base.OnInspectorGUI();
 
         if (GameManager.instance != null) {
-            if (GUILayout.Button("Satisfy Customer") && GameManager.instance.customers.Count > 0) {
-                GameManager.instance.RemoveCustomer(GameManager.instance.customers[0]);
+            if (GameManager.instance.currentGameState == GameManager.GameState.Menu) {
+                if (GUILayout.Button("Start Game")) {
+                    GameManager.instance.StartGame();
+                }
+            } else if (GameManager.instance.currentGameState == GameManager.GameState.Playing) {
+                if (GUILayout.Button("Satisfy Customer") && GameManager.instance.customers.Count > 0) {
+                    GameManager.instance.RemoveCustomer(GameManager.instance.customers[0]);
+                }
             }
         }
     }

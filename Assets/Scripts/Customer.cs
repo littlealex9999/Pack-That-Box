@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class Customer : MonoBehaviour
 {
@@ -19,6 +20,11 @@ public class Customer : MonoBehaviour
     GameObject itemRequestList;
     bool spawnedList;
 
+    float startingPatience;
+    float patience;
+
+    Image patienceMeter;
+
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -26,11 +32,17 @@ public class Customer : MonoBehaviour
 
     void Update()
     {
-        if (leaving && CheckDestinationReached()) {
+        if (leaving && CheckDestinationReached()) { // we delete this gameObject on reaching the leaving point
             Destroy(gameObject);
-        } else if (!spawnedList && CheckDestinationReached()) {
+        } else if (!spawnedList && CheckDestinationReached()) { // this will run once upon reaching the counter for the first time
             CreateItemList();
             spawnedList = true;
+        } else if (spawnedList) { // we only spawn a list when we reach the counter, so this check is essentially ensuring we are at the counter
+            patience -= Time.deltaTime;
+            if (patience <= 0) {
+                GameManager.instance.RemoveCustomer(this, true);
+                spawnedList = false; // ensures this block only executes once
+            }
         }
     }
 
@@ -73,4 +85,10 @@ public class Customer : MonoBehaviour
         return !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance;
     }
     #endregion
+
+    public void SetPatience(float time)
+    {
+        startingPatience = time;
+        patience = time;
+    }
 }
