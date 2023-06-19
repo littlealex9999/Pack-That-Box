@@ -30,6 +30,9 @@ public class GameManager : MonoBehaviour
     int currentStrikes;
 
     [SerializeField] float customerPatienceSeconds = 30;
+    [SerializeField] float customerSpawnTimeSeconds = 10;
+    float customerSpawnTimeBackupHelper;
+    float customerSpawnTimeBackupHelperTimer;
 
     [Header("Locations"), SerializeField] Transform[] customerSpawnLocations;
     [SerializeField] public List<WaitingLocation> customerWaitLocations = new List<WaitingLocation>();
@@ -47,6 +50,7 @@ public class GameManager : MonoBehaviour
     [Header("UI"), SerializeField] GameObject[] mainMenuUI;
     [SerializeField] List<GameObject> playtimeUI = new List<GameObject>();
     [Space, SerializeField] GameObject strikesUI;
+    [SerializeField] Color strikeFineColor = Color.white;
     [SerializeField] Color strikeFailColor = Color.red;
 
     Image[] strikesImages;
@@ -107,7 +111,12 @@ public class GameManager : MonoBehaviour
                 if (timer <= 0) EndGame(); // the game ends when time hits 0
 
                 // game logic
-                if (currentCustomers.Count == 0) {
+                customerSpawnTimeBackupHelperTimer -= Time.deltaTime;
+                if (currentCustomers.Count == 0) { // ensures a single customer at all times
+                    CreateNewCustomer();
+                }
+                if (customerSpawnTimeBackupHelperTimer <= 0 && (int)(timer % customerSpawnTimeSeconds) == 0) {
+                    customerSpawnTimeBackupHelperTimer = customerSpawnTimeBackupHelper;
                     CreateNewCustomer();
                 }
 
@@ -129,6 +138,8 @@ public class GameManager : MonoBehaviour
     #region Customers
     void CreateNewCustomer()
     {
+        if (!AnyAvailableLocations()) return; // a customer cannot be spawned if there is nowhere for them to wait
+
         Vector3 chosenSpawnLocation = customerSpawnLocations[Random.Range(0, customerSpawnLocations.Length)].position;
 
         // create a random customer
@@ -208,6 +219,19 @@ public class GameManager : MonoBehaviour
 
         customer.leaving = true;
         customer.SetMoveTarget(customerLeaveLocations[index]);
+    }
+
+    /// <summary>
+    /// Returns true if there are any available locations for a customer to wait at
+    /// </summary>
+    /// <returns></returns>
+    bool AnyAvailableLocations()
+    {
+        for (int i = 0; i < customerWaitLocations.Count; ++i) {
+            if (usedWaitLocations.ContainsKey(i) && !usedWaitLocations[i]) return true;
+        }
+
+        return false;
     }
     #endregion
 
@@ -312,6 +336,13 @@ public class GameManager : MonoBehaviour
         timer = minutesToGameEnd * 60; // turn to seconds
         score = 0.0f;
         currentStrikes = 0;
+
+        customerSpawnTimeBackupHelper = customerSpawnTimeSeconds / 2;
+        customerSpawnTimeBackupHelperTimer = customerSpawnTimeBackupHelper;
+
+        foreach(Image i in strikesImages) {
+            i.color = strikeFineColor;
+        }
 
         SetMenuUI(state);
     }
