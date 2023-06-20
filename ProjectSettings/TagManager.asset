@@ -7,6 +7,7 @@ TagManager:
   - Item
   - Box
   - Deletable
+  - Menu Item
   layers:
   - Default
   - TransparentFX
