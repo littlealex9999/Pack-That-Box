@@ -417,13 +417,11 @@ public class GameManager : MonoBehaviour
         for (int i = currentCustomers.Count - 1; i >= 0; --i) {
             RemoveCustomer(currentCustomers[i]);
         }
-        for (int i = 0; i < preparedBoxes.Count;) {
-            if (preparedBoxes[i] == null) {
-                preparedBoxes.RemoveAt(i);
-                continue;
-            }
 
-            Destroy(preparedBoxes[i].gameObject); // destroying a box removes it from preparedBoxes
+        while (preparedBoxes.Count > 0) {
+            Box temp = preparedBoxes[0];
+            Destroy(preparedBoxes[0].gameObject);
+            if (preparedBoxes[0] == temp) preparedBoxes.Remove(temp);
         }
 
         SetMenuUI(state);
