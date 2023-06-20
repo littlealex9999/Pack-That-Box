@@ -1437,8 +1437,10 @@ MonoBehaviour:
   customerWaitLocations:
   - customerWaitLocation: {fileID: 7039271}
     listDropLocation: {fileID: 123042428}
+    boxDropLocation: {fileID: 123042428}
   - customerWaitLocation: {fileID: 642929366}
     listDropLocation: {fileID: 123042428}
+    boxDropLocation: {fileID: 123042428}
   customerLeaveLocations:
   - {fileID: 1521005141}
   customerPresets:
@@ -1447,6 +1449,7 @@ MonoBehaviour:
   - {fileID: 796273227371880612, guid: 9446bf85c2b8a79468fc21331a447ba3, type: 3}
   itemsPerPerson: 3
   customerItemRequestList: {fileID: 936948041133378452, guid: 03142eb41bac75c4888d4c293e7604d0, type: 3}
+  customerBox: {fileID: 6093557289297057130, guid: 1489416343d64a347a59acdf91d5d049, type: 3}
   customerHeadAccessories: []
   customerEarsAccessories: []
   customerNeckAccessories: []

@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject[] requestableObjects;
     [SerializeField] int itemsPerPerson = 3;
     [SerializeField] GameObject customerItemRequestList;
+    [SerializeField] GameObject customerBox;
 
     [Header("Customer Accessories"), SerializeField] GameObject[] customerHeadAccessories;
     [SerializeField] GameObject[] customerEarsAccessories;
@@ -189,7 +190,7 @@ public class GameManager : MonoBehaviour
         AssignCounterLocation(newCustomer);
 
         newCustomer.AssignItems(newCustomerItems);
-        newCustomer.SetItemRequestList(customerItemRequestList, customerWaitLocations[newCustomer.assignedWaitIndex].listDropLocation);
+        newCustomer.SetSpawnItems(customerItemRequestList, customerBox, customerWaitLocations[newCustomer.assignedWaitIndex]);
         newCustomer.SetPatience(customerPatienceSeconds);
 
         
@@ -344,6 +345,8 @@ public class GameManager : MonoBehaviour
     #region Utility
     void AddFail()
     {
+        if (state != GameState.Playing) return;
+
         strikesImages[currentStrikes].color = strikeFailColor;
 
         ++currentStrikes;
@@ -401,6 +404,11 @@ public class GameManager : MonoBehaviour
             RemoveCustomer(currentCustomers[i]);
         }
         for (int i = 0; i < preparedBoxes.Count;) {
+            if (preparedBoxes[i] == null) {
+                preparedBoxes.RemoveAt(i);
+                continue;
+            }
+
             Destroy(preparedBoxes[i].gameObject); // destroying a box removes it from preparedBoxes
         }
 

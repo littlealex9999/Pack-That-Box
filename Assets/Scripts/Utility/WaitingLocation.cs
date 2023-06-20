@@ -7,4 +7,5 @@ public class WaitingLocation
 {
     public Transform customerWaitLocation;
     public Transform listDropLocation;
+    public Transform boxDropLocation;
 }
