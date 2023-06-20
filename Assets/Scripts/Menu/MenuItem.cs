@@ -26,6 +26,9 @@ public class MenuItem : MonoBehaviour
             case MenuFunction.Stop:
                 StopGame();
                 break;
+            case MenuFunction.ClearItems:
+                ClearItems();
+                break;
             case MenuFunction.Quit:
                 QuitGame();
                 break;
