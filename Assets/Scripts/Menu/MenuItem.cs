@@ -8,6 +8,7 @@ public class MenuItem : MonoBehaviour
     {
         Start,
         Stop,
+        ClearItems,
         Quit,
     }
 
@@ -41,6 +42,11 @@ public class MenuItem : MonoBehaviour
     void StopGame()
     {
         GameManager.instance.EndGame();
+    }
+
+    void ClearItems()
+    {
+        GameManager.instance.ClearItems();
     }
 
     void QuitGame()

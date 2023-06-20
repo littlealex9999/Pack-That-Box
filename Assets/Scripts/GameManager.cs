@@ -407,6 +407,15 @@ public class GameManager : MonoBehaviour
         SetMenuUI(state);
     }
 
+    public void ClearItems()
+    {
+        for (int i = 0; i < clearList.Count; ++i) {
+            if(clearList[i] != null) Destroy(clearList[i]);
+        }
+
+        clearList.Clear();
+    }
+
     void SetMenuUI(GameState gs)
     {
         bool mainMenuActive = true;
