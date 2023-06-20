@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -6,6 +7,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit;
+
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
@@ -20,10 +23,11 @@ public class GameManager : MonoBehaviour
 
     GameState state = GameState.Menu;
 
-    [Header("Main Game Settings"), SerializeField] Score scoreboard;
+    [Header("Required Miscellaneous"), SerializeField] Score scoreboard;
     float score;
 
-    [SerializeField] float minutesToGameEnd;
+
+    [Header("Main Game Settings"), SerializeField] float minutesToGameEnd;
     float timer;
 
     [SerializeField] int maxStrikes = 3;
@@ -192,8 +196,7 @@ public class GameManager : MonoBehaviour
         newCustomer.AssignItems(newCustomerItems);
         newCustomer.SetSpawnItems(customerItemRequestList, customerBox, customerWaitLocations[newCustomer.assignedWaitIndex]);
         newCustomer.SetPatience(customerPatienceSeconds);
-
-        
+        newCustomer.AttachAccessories(GenerateAccessories());
     }
 
     public void RemoveCustomer(Customer customer, bool failed = false)
@@ -269,6 +272,17 @@ public class GameManager : MonoBehaviour
 
         return false;
     }
+
+    GameObject[] GenerateAccessories()
+    {
+        return new GameObject[] {
+            ArrayHelper<GameObject>.GetRandomElement(customerHeadAccessories),
+            ArrayHelper<GameObject>.GetRandomElement(customerEarsAccessories),
+            ArrayHelper<GameObject>.GetRandomElement(customerNeckAccessories),
+        };
+    }
+
+    
     #endregion
 
     #region Boxes

@@ -125,6 +125,8 @@ public class Customer : MonoBehaviour
     public void AttachAccessories(GameObject[] accessories)
     {
         foreach (GameObject accessory in accessories) {
+            if (accessory == null) continue;
+
             Transform target = GetAccessoryTransform(accessory.GetComponent<Accessory>().accessoryType); // get the target transform from the accessory type
             if (target.childCount > 0) continue; // do not equip multiple accessories
             Instantiate(accessory, target);
