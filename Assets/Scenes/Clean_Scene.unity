@@ -3443,7 +3443,7 @@ MonoBehaviour:
   m_OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
-  grabbableObject: {fileID: 0}
+  grabbableObject: {fileID: 3605249200567503146, guid: 01a848301c4db2640ac4226b54b1fedc, type: 3}
 --- !u!1 &549881244
 GameObject:
   m_ObjectHideFlags: 0
@@ -3804,7 +3804,7 @@ MonoBehaviour:
   m_OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
-  grabbableObject: {fileID: 0}
+  grabbableObject: {fileID: 7058569611539489546, guid: 2ca5aa678d5ed664f96db7405049783d, type: 3}
 --- !u!1001 &608415455
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6619,7 +6619,7 @@ MonoBehaviour:
   m_OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
-  grabbableObject: {fileID: 0}
+  grabbableObject: {fileID: 1214732002257550078, guid: e4d8e2700af186148b127697c2911c01, type: 3}
 --- !u!1 &1082146518
 GameObject:
   m_ObjectHideFlags: 0
@@ -6875,7 +6875,7 @@ MonoBehaviour:
   m_OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
-  grabbableObject: {fileID: 0}
+  grabbableObject: {fileID: 968478617232035923, guid: b02a6e0bc621f9b4e949391aa2bfe8db, type: 3}
 --- !u!114 &1090236187 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4526197066371214231, guid: 728f55d9a49a89a4bb1abf7f3f18fb3b, type: 3}
@@ -9472,6 +9472,26 @@ PrefabInstance:
       propertyPath: m_StepOffset
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6341788158384091305, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6341788158384091305, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6341788158384091305, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6341788158384091305, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6341788158384091306, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
+      propertyPath: m_RequestedTrackingOriginMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6341788158589099804, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -9482,7 +9502,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6341788158589099804, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.487
+      value: 0.729
       objectReference: {fileID: 0}
     - target: {fileID: 6341788158589099804, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -10396,7 +10416,7 @@ MonoBehaviour:
   m_OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
-  grabbableObject: {fileID: 0}
+  grabbableObject: {fileID: 8840784468579330397, guid: dbe91fe9d31d0824aa172219fd26908e, type: 3}
 --- !u!1 &1884311951 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ef30b81f29d83f14890ad6c847ce3c5a, type: 3}
@@ -11174,7 +11194,7 @@ MonoBehaviour:
   m_OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
-  grabbableObject: {fileID: 0}
+  grabbableObject: {fileID: 4250759944345997565, guid: 32cefd8f6ecae8642a90ce885a04769e, type: 3}
 --- !u!1 &2098635823
 GameObject:
   m_ObjectHideFlags: 0
@@ -11635,7 +11655,7 @@ MonoBehaviour:
   m_OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
-  grabbableObject: {fileID: 0}
+  grabbableObject: {fileID: 5335359424188434869, guid: 11b76959029d51e4792b61fe3ebc7ef0, type: 3}
 --- !u!4 &3593958576007925948 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8942242157855649587, guid: d1ede87afd4673e4d98e83d0cdbd0076, type: 3}
@@ -11762,7 +11782,7 @@ MonoBehaviour:
   m_OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
-  grabbableObject: {fileID: 0}
+  grabbableObject: {fileID: 7326586873616542034, guid: d3acaefb32edf6240b123f5f6791f395, type: 3}
 --- !u!33 &4766785000214667512
 MeshFilter:
   m_ObjectHideFlags: 0
