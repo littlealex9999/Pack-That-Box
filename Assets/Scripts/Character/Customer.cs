@@ -105,13 +105,11 @@ public class Customer : MonoBehaviour
     #region Navigation
     public void SetMoveTarget(Transform target)
     {
-        agent.destination = target.position;
+        agent.SetDestination(target.position);
     }
 
     bool CheckDestinationReached()
     {
-        return transform.position == agent.destination;
-
         return !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance;
     }
     #endregion

@@ -1450,7 +1450,9 @@ MonoBehaviour:
   itemsPerPerson: 3
   customerItemRequestList: {fileID: 936948041133378452, guid: 03142eb41bac75c4888d4c293e7604d0, type: 3}
   customerBox: {fileID: 6093557289297057130, guid: 1489416343d64a347a59acdf91d5d049, type: 3}
-  customerHeadAccessories: []
+  customerHeadAccessories:
+  - {fileID: 0}
+  - {fileID: 8600282221275246415, guid: 79f46e7b43a9aaa4bbdec3e313528814, type: 3}
   customerEarsAccessories: []
   customerNeckAccessories: []
   preparedBoxes: []
