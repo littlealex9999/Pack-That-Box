@@ -63,6 +63,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] Color strikeFailColor = Color.red;
 
     Image[] strikesImages;
+
+    List<GameObject> clearList = new List<GameObject>();
     #endregion
 
     #region Access Properties
@@ -346,6 +348,11 @@ public class GameManager : MonoBehaviour
 
         ++currentStrikes;
         CheckGameFail();
+    }
+
+    public void AddObjectToClearList(GameObject go)
+    {
+        clearList.Add(go);
     }
 
     /// <summary>

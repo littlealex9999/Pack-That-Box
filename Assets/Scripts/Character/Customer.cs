@@ -91,6 +91,8 @@ public class Customer : MonoBehaviour
                 text.text = requestedItems[i].itemName;
             }
         }
+
+        GameManager.instance.AddObjectToClearList(itemRequestList);
     }
     #endregion
 
