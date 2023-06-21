@@ -1410,6 +1410,10 @@ MonoBehaviour:
   customerSpawnTimeSecondsLow: 1
   customerWalkSpeedHigh: 20
   customerWalkSpeedLow: 3.5
+  customerItemsRequestedMaxHigh: 5
+  customerItemsRequestedMaxLow: 3
+  customerItemsRequestedMinHigh: 3
+  customerItemsRequestedMinLow: 1
   minutesToMaxDifficultyRamp: 0.5
   customerDifficultyCurve:
     serializedVersion: 2
@@ -1450,7 +1454,6 @@ MonoBehaviour:
   - {fileID: 8322523548514040714, guid: b7a0010266033044db016dfc117584e9, type: 3}
   requestableObjects:
   - {fileID: 796273227371880612, guid: 9446bf85c2b8a79468fc21331a447ba3, type: 3}
-  itemsPerPerson: 3
   customerItemRequestList: {fileID: 936948041133378452, guid: 03142eb41bac75c4888d4c293e7604d0, type: 3}
   customerBox: {fileID: 6093557289297057130, guid: 1489416343d64a347a59acdf91d5d049, type: 3}
   customerHeadAccessories:
@@ -1458,7 +1461,6 @@ MonoBehaviour:
   - {fileID: 8600282221275246415, guid: 79f46e7b43a9aaa4bbdec3e313528814, type: 3}
   customerEarsAccessories: []
   customerNeckAccessories: []
-  preparedBoxes: []
   mainMenuUI:
   - {fileID: 178272018}
   playtimeUI:
@@ -1466,6 +1468,7 @@ MonoBehaviour:
   strikesUI: {fileID: 1940689738}
   strikeFineColor: {r: 1, g: 1, b: 1, a: 1}
   strikeFailColor: {r: 1, g: 0, b: 0, a: 1}
+  preparedBoxes: []
 --- !u!114 &859226240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2879,62 +2882,6 @@ PrefabInstance:
     - target: {fileID: 6341788158589099805, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
       propertyPath: m_Name
       value: VR controller
-      objectReference: {fileID: 0}
-    - target: {fileID: 6341788158649772265, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
-      propertyPath: m_SelectExited.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6341788158649772265, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
-      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6341788158649772265, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
-      propertyPath: m_SelectExited.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6341788158649772265, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
-      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6341788158649772265, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
-      propertyPath: m_SelectExited.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 859226239}
-    - target: {fileID: 6341788158649772265, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
-      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 859226239}
-    - target: {fileID: 6341788158649772265, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
-      propertyPath: m_SelectExited.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6341788158649772265, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
-      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6341788158649772265, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
-      propertyPath: m_SelectExited.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetObjectLayerDefault
-      objectReference: {fileID: 0}
-    - target: {fileID: 6341788158649772265, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
-      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetObjectLayerGrabbed
-      objectReference: {fileID: 0}
-    - target: {fileID: 6341788158649772265, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
-      propertyPath: m_SelectExited.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: GameManager, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 6341788158649772265, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
-      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: GameManager, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 6341788158649772265, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
-      propertyPath: m_SelectExited.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 6341788158649772265, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
-      propertyPath: m_SelectEntered.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
