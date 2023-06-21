@@ -22,16 +22,20 @@ public class Box : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Item") {
-            itemsInBox.Add(other.GetComponent<PackItem>());
-            other.transform.SetParent(transform, true);
+            PackItem item = other.GetComponent<PackItem>();
+
+            itemsInBox.Add(item);
+            item.transform.SetParent(transform, true);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "Item") {
-            itemsInBox.Remove(other.GetComponent<PackItem>());
-            other.transform.SetParent(null, true);
+            PackItem item = other.GetComponent<PackItem>();
+
+            itemsInBox.Remove(item);
+            item.transform.SetParent(null, true);
         }
     }
 
