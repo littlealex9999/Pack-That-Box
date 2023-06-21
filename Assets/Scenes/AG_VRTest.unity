@@ -3387,7 +3387,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   function: 0
-  offset: {x: -1.63, y: 0, z: 0}
+  offset: {x: -1.83, y: 0, z: 0}
   maxDistance: 1.43
 --- !u!1 &1663601983
 GameObject:

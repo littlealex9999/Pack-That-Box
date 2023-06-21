@@ -425,8 +425,11 @@ public class GameManager : MonoBehaviour
         }
 
         SetMenuUI(state);
+
+        ClearItems();
     }
 
+    [ContextMenu("Clear Items")]
     public void ClearItems()
     {
         for (int i = 0; i < clearList.Count; ++i) {
