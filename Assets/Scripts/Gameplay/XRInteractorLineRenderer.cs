@@ -6,6 +6,11 @@ using UnityEngine.XR.Interaction.Toolkit;
 [RequireComponent(typeof(LineRenderer)), RequireComponent(typeof(XRRayInteractor))]
 public class XRInteractorLineRenderer : MonoBehaviour
 {
+    public bool drawLineWhenNoPickup = true;
+
+    public Gradient normalColors;
+    public Gradient hoverObjectColors;
+
     LineRenderer lineRenderer;
     XRRayInteractor rayInteractor;
 
@@ -21,9 +26,21 @@ public class XRInteractorLineRenderer : MonoBehaviour
     {
         if (targets.Count > 0) {
             if (!lineRenderer.enabled) lineRenderer.enabled = true;
+            lineRenderer.colorGradient = hoverObjectColors;
 
-            lineRenderer.SetPosition(0, rayInteractor.transform.position);
+            lineRenderer.SetPosition(0, rayInteractor.rayOriginTransform.position);
             lineRenderer.SetPosition(1, ChooseTarget().position);
+        } else if (drawLineWhenNoPickup) {
+            lineRenderer.colorGradient = normalColors;
+
+            lineRenderer.SetPosition(0, rayInteractor.rayOriginTransform.position);
+
+            // raycast to see if there are any colliders in the way. use that point if it hits, otherwise just point the line forwards
+            if (Physics.Raycast(rayInteractor.rayOriginTransform.position, rayInteractor.rayOriginTransform.forward, out RaycastHit rayHit, rayInteractor.maxRaycastDistance)) {
+                lineRenderer.SetPosition(1, rayHit.point);
+            } else {
+                lineRenderer.SetPosition(1, rayInteractor.rayOriginTransform.position + rayInteractor.rayOriginTransform.forward * rayInteractor.maxRaycastDistance);
+            }
         } else if (lineRenderer.enabled) {
             lineRenderer.enabled = false;
         }

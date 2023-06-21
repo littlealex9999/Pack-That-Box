@@ -937,7 +937,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 396761344}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.007, y: 2.135, z: -4.335}
+  m_LocalPosition: {x: 2.71, y: 2.135, z: -4.335}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -954,10 +954,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 396761344}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 60128405cc4fd4643a0374e69022503f, type: 3}
+  m_Script: {fileID: 11500000, guid: d17f12a6aa8be0241b496772947adf4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectTime: 3
+  itemsInBox: []
 --- !u!1 &453693965
 GameObject:
   m_ObjectHideFlags: 0
@@ -2883,6 +2883,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: VR controller
       objectReference: {fileID: 0}
+    - target: {fileID: 6840353322340714269, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
+      propertyPath: normalColors.key0.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6840353322340714269, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
+      propertyPath: normalColors.key0.g
+      value: 0.14640617
+      objectReference: {fileID: 0}
+    - target: {fileID: 6840353322340714269, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
+      propertyPath: normalColors.key0.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6840353322340714269, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
+      propertyPath: normalColors.key1.g
+      value: 0.14640617
+      objectReference: {fileID: 0}
+    - target: {fileID: 6840353322340714269, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
+      propertyPath: normalColors.key1.r
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
 --- !u!1 &1434699699 stripped
@@ -3264,13 +3284,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 429765063880174390, guid: 9446bf85c2b8a79468fc21331a447ba3, type: 3}
+      propertyPath: scaleInBox
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 796273227371880612, guid: 9446bf85c2b8a79468fc21331a447ba3, type: 3}
       propertyPath: m_Name
       value: 001 (CUBE RED) (1)
       objectReference: {fileID: 0}
     - target: {fileID: 796273227371880612, guid: 9446bf85c2b8a79468fc21331a447ba3, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 796273227371880612, guid: 9446bf85c2b8a79468fc21331a447ba3, type: 3}
       propertyPath: m_TagString
-      value: Menu Item
+      value: Item
       objectReference: {fileID: 0}
     - target: {fileID: 9138809594383060231, guid: 9446bf85c2b8a79468fc21331a447ba3, type: 3}
       propertyPath: m_RootOrder
@@ -3316,29 +3344,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 429765063880174390, guid: 9446bf85c2b8a79468fc21331a447ba3, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9446bf85c2b8a79468fc21331a447ba3, type: 3}
---- !u!1 &1662176613 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 796273227371880612, guid: 9446bf85c2b8a79468fc21331a447ba3, type: 3}
-  m_PrefabInstance: {fileID: 1662176612}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1662176614
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1662176613}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e419125364fc1a4499dfaeb1caa3bad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  function: 0
-  offset: {x: -1.83, y: 0, z: 0}
-  maxDistance: 1.43
 --- !u!1 &1663601983
 GameObject:
   m_ObjectHideFlags: 0
