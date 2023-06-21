@@ -14,6 +14,25 @@ public class MenuItem : MonoBehaviour
 
     public MenuFunction function;
 
+    Vector3 startingPos;
+    [SerializeField] Vector3 offset;
+    [SerializeField] float maxDistance = 1;
+
+    public Vector3 startingOffset { get { return offset; } }
+    public float range { get { return maxDistance; } }
+
+    private void Start()
+    {
+        startingPos = transform.position + startingOffset;
+    }
+
+    private void Update()
+    {
+        if ((transform.position - startingPos).sqrMagnitude > maxDistance * maxDistance) {
+            transform.position = startingPos;
+        }
+    }
+
     /// <summary>
     /// Performs the action this item is meant to do
     /// </summary>
