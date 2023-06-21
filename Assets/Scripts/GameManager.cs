@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -7,11 +8,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit;
 
+using Random = UnityEngine.Random;
+
 public class GameManager : MonoBehaviour
 {
     #region Variables
     public static GameManager instance; // singleton for references to a single game manager
-
+    #region Gamestate
     public enum GameState
     {
         Menu = default,
@@ -19,43 +22,66 @@ public class GameManager : MonoBehaviour
     }
 
     GameState state = GameState.Menu;
-
-    [Header("Main Game Settings"), SerializeField] Score scoreboard;
+    #endregion
+    #region Required Miscellaneous
+    [Header("Required Miscellaneous"), SerializeField] Score scoreboard;
     float score;
-
-    [SerializeField] float minutesToGameEnd;
+    #endregion
+    #region Main Game Settings
+    [Header("Main Game Settings"), SerializeField] float minutesToGameEnd;
     float timer;
 
     [SerializeField] int maxStrikes = 3;
     int currentStrikes;
+    #endregion
+    #region Customer Difficulty
+    // patience
+    [Header("Customer Difficulty"), SerializeField] float customerPatienceSecondsHigh = 30;
+    [SerializeField] float customerPatienceSecondsLow = 10;
+    float customerPatienceSeconds = 30;
 
-    [Header("Customer Difficulty"), SerializeField] float customerPatienceSeconds = 30;
-    [SerializeField] float customerSpawnTimeSecondsHigh = 10;
+    // spawn time
+    [Space, SerializeField] float customerSpawnTimeSecondsHigh = 10;
     [SerializeField] float customerSpawnTimeSecondsLow = 5;
     float customerSpawnTimeSeconds;
-
-    [SerializeField] float minutesToMaxDifficultyRamp = 3;
-    float customerSpawnTimeBackupHelper;
+    float customerSpawnTimeBackupHelper; 
     float customerSpawnTimeBackupHelperTimer;
-    [SerializeField] AnimationCurve customerSpawnTimeCurve;
 
+    // walk speed
+    [Space, SerializeField] float customerWalkSpeedHigh = 7;
+    [SerializeField] float customerWalkSpeedLow = 3.5f;
+    float customerWalkSpeed;
+
+    // item number requests
+    [Space, SerializeField] int customerItemsRequestedMaxHigh = 5;
+    [SerializeField] int customerItemsRequestedMaxLow = 3;
+    [SerializeField] int customerItemsRequestedMinHigh = 3;
+    [SerializeField] int customerItemsRequestedMinLow = 1;
+    int customerItemsRequestedMax;
+    int customerItemsRequestedMin;
+
+    // duration & curve
+    [Space, SerializeField] float minutesToMaxDifficultyRamp = 3;
+    [SerializeField] AnimationCurve customerDifficultyCurve;
+    #endregion
+    #region Locations
     [Header("Locations"), SerializeField] Transform[] customerSpawnLocations;
     [SerializeField] public List<WaitingLocation> customerWaitLocations = new List<WaitingLocation>();
     [SerializeField] Transform[] customerLeaveLocations;
     Dictionary<int, bool> usedWaitLocations = new Dictionary<int, bool>();
-
+    #endregion
+    #region Customers
     [Header("Customers"), SerializeField] GameObject[] customerPresets;
     [SerializeField] GameObject[] requestableObjects;
-    [SerializeField] int itemsPerPerson = 3;
     [SerializeField] GameObject customerItemRequestList;
-
+    [SerializeField] GameObject customerBox;
+    #endregion
+    #region Customer Accessories
     [Header("Customer Accessories"), SerializeField] GameObject[] customerHeadAccessories;
     [SerializeField] GameObject[] customerEarsAccessories;
     [SerializeField] GameObject[] customerNeckAccessories;
-
-    List<Customer> currentCustomers = new List<Customer>();
-    [HideInInspector] public List<Box> preparedBoxes = new List<Box>();
-
+    #endregion
+    #region UI
     [Header("UI"), SerializeField] GameObject[] mainMenuUI;
     [SerializeField] List<GameObject> playtimeUI = new List<GameObject>();
     [Space, SerializeField] GameObject strikesUI;
@@ -63,6 +89,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] Color strikeFailColor = Color.red;
 
     Image[] strikesImages;
+    #endregion
+    #region Tracking Lists
+    List<Customer> currentCustomers = new List<Customer>();
+    [HideInInspector] public List<Box> preparedBoxes = new List<Box>();
+    List<GameObject> clearList = new List<GameObject>();
+    #endregion
     #endregion
 
     #region Access Properties
@@ -122,7 +154,12 @@ public class GameManager : MonoBehaviour
                 // game logic
 
                 // difficulty ramp
-                customerSpawnTimeSeconds = EvaluateDifficultyRamp();
+                float rampEval = EvaluateDifficultyRamp();
+                customerPatienceSeconds = Mathf.Lerp(customerPatienceSecondsHigh, customerPatienceSecondsLow, rampEval);
+                customerSpawnTimeSeconds = Mathf.Lerp(customerSpawnTimeSecondsHigh, customerSpawnTimeSecondsLow, rampEval);
+                customerWalkSpeed = Mathf.Lerp(customerWalkSpeedLow, customerWalkSpeedHigh, rampEval);
+                customerItemsRequestedMax = Mathf.RoundToInt(Mathf.Lerp(customerItemsRequestedMaxLow, customerItemsRequestedMaxHigh, rampEval));
+                customerItemsRequestedMin = Mathf.RoundToInt(Mathf.Lerp(customerItemsRequestedMinLow, customerItemsRequestedMinHigh, rampEval));
 
                 CustomerSpawningUpdate();
 
@@ -142,14 +179,15 @@ public class GameManager : MonoBehaviour
 
     #region Gameplay & Flow
     #region Gameplay Updates
+    /// <summary>
+    /// returns the value of the difficulty ramp based on the current time
+    /// </summary>
+    /// <returns></returns>
     float EvaluateDifficultyRamp()
     {
         float difficultyRampMaxTime = minutesToMaxDifficultyRamp * 60;
         float gameEndTime = minutesToGameEnd * 60;
-        float difficulty =
-            customerSpawnTimeCurve.Evaluate((Mathf.Clamp(timer, difficultyRampMaxTime, gameEndTime) - difficultyRampMaxTime) / (gameEndTime - difficultyRampMaxTime));
-
-        return Mathf.Lerp(customerSpawnTimeSecondsHigh, customerSpawnTimeSecondsLow, difficulty);
+        return customerDifficultyCurve.Evaluate((Mathf.Clamp(timer, difficultyRampMaxTime, gameEndTime) - difficultyRampMaxTime) / (gameEndTime - difficultyRampMaxTime));
     }
 
     void CustomerSpawningUpdate()
@@ -178,8 +216,9 @@ public class GameManager : MonoBehaviour
         currentCustomers.Add(newCustomer);
 
         List<PackItem> newCustomerItems = new List<PackItem>();
+        int itemCount = Random.Range(customerItemsRequestedMin, customerItemsRequestedMax);
 
-        for (int i = 0; i < itemsPerPerson; ++i) {
+        for (int i = 0; i < itemCount; ++i) {
             // add random items to our list
             newCustomerItems.Add(requestableObjects[Random.Range(0, requestableObjects.Length)].GetComponent<PackItem>());
         }
@@ -187,10 +226,10 @@ public class GameManager : MonoBehaviour
         AssignCounterLocation(newCustomer);
 
         newCustomer.AssignItems(newCustomerItems);
-        newCustomer.SetItemRequestList(customerItemRequestList, customerWaitLocations[newCustomer.assignedWaitIndex].listDropLocation);
+        newCustomer.SetSpawnItems(customerItemRequestList, customerBox, customerWaitLocations[newCustomer.assignedWaitIndex]);
         newCustomer.SetPatience(customerPatienceSeconds);
-
-        
+        newCustomer.SetMoveSpeed(customerWalkSpeed);
+        newCustomer.AttachAccessories(GenerateAccessories());
     }
 
     public void RemoveCustomer(Customer customer, bool failed = false)
@@ -266,6 +305,17 @@ public class GameManager : MonoBehaviour
 
         return false;
     }
+
+    GameObject[] GenerateAccessories()
+    {
+        return new GameObject[] {
+            ArrayHelper<GameObject>.GetRandomElement(customerHeadAccessories),
+            ArrayHelper<GameObject>.GetRandomElement(customerEarsAccessories),
+            ArrayHelper<GameObject>.GetRandomElement(customerNeckAccessories),
+        };
+    }
+
+    
     #endregion
 
     #region Boxes
@@ -342,10 +392,17 @@ public class GameManager : MonoBehaviour
     #region Utility
     void AddFail()
     {
+        if (state != GameState.Playing) return;
+
         strikesImages[currentStrikes].color = strikeFailColor;
 
         ++currentStrikes;
         CheckGameFail();
+    }
+
+    public void AddObjectToClearList(GameObject go)
+    {
+        clearList.Add(go);
     }
 
     /// <summary>
@@ -393,11 +450,26 @@ public class GameManager : MonoBehaviour
         for (int i = currentCustomers.Count - 1; i >= 0; --i) {
             RemoveCustomer(currentCustomers[i]);
         }
-        for (int i = 0; i < preparedBoxes.Count;) {
-            Destroy(preparedBoxes[i].gameObject); // destroying a box removes it from preparedBoxes
+
+        while (preparedBoxes.Count > 0) {
+            Box temp = preparedBoxes[0];
+            Destroy(preparedBoxes[0].gameObject);
+            if (preparedBoxes[0] == temp) preparedBoxes.Remove(temp);
         }
 
         SetMenuUI(state);
+
+        ClearItems();
+    }
+
+    [ContextMenu("Clear Items")]
+    public void ClearItems()
+    {
+        for (int i = 0; i < clearList.Count; ++i) {
+            if(clearList[i] != null) Destroy(clearList[i]);
+        }
+
+        clearList.Clear();
     }
 
     void SetMenuUI(GameState gs)

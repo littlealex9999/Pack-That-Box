@@ -17,12 +17,13 @@ public class Customer : MonoBehaviour
     [HideInInspector] public int assignedWaitIndex = -1;
     [HideInInspector] public bool leaving = false;
 
-    Transform listSpawnLocation;
+    WaitingLocation waitingLocation;
     GameObject itemRequestList;
+    GameObject boxPrefab;
     bool spawnedList;
 
-    float startingPatience;
-    float patience;
+    [SerializeField, HideInInspector] float startingPatience;
+    [SerializeField, HideInInspector] float patience;
 
     Image patienceMeter;
 
@@ -50,7 +51,7 @@ public class Customer : MonoBehaviour
         if (leaving && CheckDestinationReached()) { // we delete this gameObject on reaching the leaving point
             Destroy(gameObject);
         } else if (!spawnedList && CheckDestinationReached()) { // this will run once upon reaching the counter for the first time
-            CreateItemList();
+            SpawnItems();
             spawnedList = true;
         } else if (spawnedList) { // we only spawn a list when we reach the counter, so this check is essentially ensuring we are at the counter
             patience -= Time.deltaTime;
@@ -72,15 +73,17 @@ public class Customer : MonoBehaviour
         requestedItems = items;
     }
 
-    public void SetItemRequestList(GameObject go, Transform spawnLocation)
+    public void SetSpawnItems(GameObject list, GameObject box, WaitingLocation spawnLocation)
     {
-        itemRequestList = go;
-        listSpawnLocation = spawnLocation;
+        itemRequestList = list;
+        boxPrefab = box;
+        waitingLocation = spawnLocation;
     }
 
-    void CreateItemList()
+    void SpawnItems()
     {
-        itemRequestList = Instantiate(itemRequestList, listSpawnLocation.position, listSpawnLocation.rotation);
+        // spawn item list and set the relevant text
+        itemRequestList = Instantiate(itemRequestList, waitingLocation.listDropLocation.position, waitingLocation.listDropLocation.rotation);
         TextMeshProUGUI text = itemRequestList.GetComponentInChildren<TextMeshProUGUI>();
 
         if (text != null && requestedItems.Count > 0) {
@@ -91,13 +94,23 @@ public class Customer : MonoBehaviour
                 text.text = requestedItems[i].itemName;
             }
         }
+
+        GameManager.instance.AddObjectToClearList(itemRequestList);
+
+        // spawn the box
+        GameManager.instance.AddObjectToClearList(Instantiate(boxPrefab, waitingLocation.boxDropLocation.position, waitingLocation.boxDropLocation.rotation));
     }
     #endregion
 
     #region Navigation
     public void SetMoveTarget(Transform target)
     {
-        agent.destination = target.position;
+        agent.SetDestination(target.position);
+    }
+
+    public void SetMoveSpeed(float speed)
+    {
+        agent.speed = speed;
     }
 
     bool CheckDestinationReached()
@@ -115,6 +128,8 @@ public class Customer : MonoBehaviour
     public void AttachAccessories(GameObject[] accessories)
     {
         foreach (GameObject accessory in accessories) {
+            if (accessory == null) continue;
+
             Transform target = GetAccessoryTransform(accessory.GetComponent<Accessory>().accessoryType); // get the target transform from the accessory type
             if (target.childCount > 0) continue; // do not equip multiple accessories
             Instantiate(accessory, target);

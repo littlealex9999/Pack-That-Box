@@ -10,9 +10,9 @@ public class XRSpawnInteractable : XRBaseInteractable
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
         GameObject newObject = Instantiate(grabbableObject);
+        if (GameManager.instance != null) GameManager.instance.AddObjectToClearList(newObject);
 
         XRGrabInteractable objectInteractable = newObject.GetComponent<XRGrabInteractable>();
-
         interactionManager.SelectEnter(args.interactorObject, objectInteractable);
 
         base.OnSelectEntered(args);

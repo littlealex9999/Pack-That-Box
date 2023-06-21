@@ -1404,11 +1404,14 @@ MonoBehaviour:
   scoreboard: {fileID: 11400000, guid: 340182e303c12ae49aebd9b7764b3ceb, type: 2}
   minutesToGameEnd: 5
   maxStrikes: 3
-  customerPatienceSeconds: 10
+  customerPatienceSecondsHigh: 30
+  customerPatienceSecondsLow: 2
   customerSpawnTimeSecondsHigh: 10
-  customerSpawnTimeSecondsLow: 5
-  minutesToMaxDifficultyRamp: 3
-  customerSpawnTimeCurve:
+  customerSpawnTimeSecondsLow: 1
+  customerWalkSpeedHigh: 20
+  customerWalkSpeedLow: 3.5
+  minutesToMaxDifficultyRamp: 0.5
+  customerDifficultyCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -1437,8 +1440,10 @@ MonoBehaviour:
   customerWaitLocations:
   - customerWaitLocation: {fileID: 7039271}
     listDropLocation: {fileID: 123042428}
+    boxDropLocation: {fileID: 123042428}
   - customerWaitLocation: {fileID: 642929366}
     listDropLocation: {fileID: 123042428}
+    boxDropLocation: {fileID: 123042428}
   customerLeaveLocations:
   - {fileID: 1521005141}
   customerPresets:
@@ -1447,7 +1452,10 @@ MonoBehaviour:
   - {fileID: 796273227371880612, guid: 9446bf85c2b8a79468fc21331a447ba3, type: 3}
   itemsPerPerson: 3
   customerItemRequestList: {fileID: 936948041133378452, guid: 03142eb41bac75c4888d4c293e7604d0, type: 3}
-  customerHeadAccessories: []
+  customerBox: {fileID: 6093557289297057130, guid: 1489416343d64a347a59acdf91d5d049, type: 3}
+  customerHeadAccessories:
+  - {fileID: 0}
+  - {fileID: 8600282221275246415, guid: 79f46e7b43a9aaa4bbdec3e313528814, type: 3}
   customerEarsAccessories: []
   customerNeckAccessories: []
   preparedBoxes: []
@@ -3382,6 +3390,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   function: 0
+  offset: {x: -1.83, y: 0, z: 0}
+  maxDistance: 1.43
 --- !u!1 &1663601983
 GameObject:
   m_ObjectHideFlags: 0

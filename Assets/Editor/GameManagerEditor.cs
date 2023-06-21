@@ -20,6 +20,10 @@ public class GameManagerEditor : Editor
                     GameManager.instance.RemoveCustomer(GameManager.instance.customers[0]);
                 }
             }
+
+            if (GUILayout.Button("Clear Items")) {
+                GameManager.instance.ClearItems();
+            }
         }
     }
 }
