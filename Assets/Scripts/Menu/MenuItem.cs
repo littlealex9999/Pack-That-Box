@@ -18,6 +18,7 @@ public class MenuItem : MonoBehaviour
     [SerializeField] Vector3 offset;
     [SerializeField] float maxDistance = 1;
 
+    public Vector3 startPosition { get { return startingPos; } }
     public Vector3 startingOffset { get { return offset; } }
     public float range { get { return maxDistance; } }
 
