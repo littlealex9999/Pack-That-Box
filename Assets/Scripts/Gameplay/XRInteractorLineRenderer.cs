@@ -20,9 +20,11 @@ public class XRInteractorLineRenderer : MonoBehaviour
     private void Update()
     {
         if (target != null) {
+            if (!lineRenderer.enabled) lineRenderer.enabled = true;
+
             lineRenderer.SetPosition(0, rayInteractor.transform.position);
             lineRenderer.SetPosition(1, target.position);
-        } else if (!lineRenderer.enabled) {
+        } else if (lineRenderer.enabled) {
             lineRenderer.enabled = false;
         }
     }
