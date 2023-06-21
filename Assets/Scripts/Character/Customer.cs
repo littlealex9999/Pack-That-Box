@@ -22,8 +22,8 @@ public class Customer : MonoBehaviour
     GameObject boxPrefab;
     bool spawnedList;
 
-    float startingPatience;
-    float patience;
+    [SerializeField, HideInInspector] float startingPatience;
+    [SerializeField, HideInInspector] float patience;
 
     Image patienceMeter;
 
@@ -106,6 +106,11 @@ public class Customer : MonoBehaviour
     public void SetMoveTarget(Transform target)
     {
         agent.SetDestination(target.position);
+    }
+
+    public void SetMoveSpeed(float speed)
+    {
+        agent.speed = speed;
     }
 
     bool CheckDestinationReached()

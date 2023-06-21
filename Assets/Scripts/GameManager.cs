@@ -33,15 +33,26 @@ public class GameManager : MonoBehaviour
     [SerializeField] int maxStrikes = 3;
     int currentStrikes;
 
-    [Header("Customer Difficulty"), SerializeField] float customerPatienceSeconds = 30;
+    // patience
+    [Header("Customer Difficulty"), SerializeField] float customerPatienceSecondsHigh = 30;
+    [SerializeField] float customerPatienceSecondsLow = 10;
+    float customerPatienceSeconds = 30;
+
+    // spawn time
     [SerializeField] float customerSpawnTimeSecondsHigh = 10;
     [SerializeField] float customerSpawnTimeSecondsLow = 5;
     float customerSpawnTimeSeconds;
-
-    [SerializeField] float minutesToMaxDifficultyRamp = 3;
-    float customerSpawnTimeBackupHelper;
+    float customerSpawnTimeBackupHelper; 
     float customerSpawnTimeBackupHelperTimer;
-    [SerializeField] AnimationCurve customerSpawnTimeCurve;
+
+    // walk speed
+    [SerializeField] float customerWalkSpeedHigh = 7;
+    [SerializeField] float customerWalkSpeedLow = 3.5f;
+    float customerWalkSpeed;
+
+    // duration & cruve
+    [SerializeField] float minutesToMaxDifficultyRamp = 3;
+    [SerializeField] AnimationCurve customerDifficultyCurve;
 
     [Header("Locations"), SerializeField] Transform[] customerSpawnLocations;
     [SerializeField] public List<WaitingLocation> customerWaitLocations = new List<WaitingLocation>();
@@ -129,7 +140,10 @@ public class GameManager : MonoBehaviour
                 // game logic
 
                 // difficulty ramp
-                customerSpawnTimeSeconds = EvaluateDifficultyRamp();
+                float rampEval = EvaluateDifficultyRamp();
+                customerPatienceSeconds = Mathf.Lerp(customerPatienceSecondsHigh, customerPatienceSecondsLow, rampEval);
+                customerSpawnTimeSeconds = Mathf.Lerp(customerSpawnTimeSecondsHigh, customerSpawnTimeSecondsLow, rampEval);
+                customerWalkSpeed = Mathf.Lerp(customerWalkSpeedLow, customerWalkSpeedHigh, rampEval);
 
                 CustomerSpawningUpdate();
 
@@ -149,14 +163,15 @@ public class GameManager : MonoBehaviour
 
     #region Gameplay & Flow
     #region Gameplay Updates
+    /// <summary>
+    /// returns the value of the difficulty ramp based on the current time
+    /// </summary>
+    /// <returns></returns>
     float EvaluateDifficultyRamp()
     {
         float difficultyRampMaxTime = minutesToMaxDifficultyRamp * 60;
         float gameEndTime = minutesToGameEnd * 60;
-        float difficulty =
-            customerSpawnTimeCurve.Evaluate((Mathf.Clamp(timer, difficultyRampMaxTime, gameEndTime) - difficultyRampMaxTime) / (gameEndTime - difficultyRampMaxTime));
-
-        return Mathf.Lerp(customerSpawnTimeSecondsHigh, customerSpawnTimeSecondsLow, difficulty);
+        return customerDifficultyCurve.Evaluate((Mathf.Clamp(timer, difficultyRampMaxTime, gameEndTime) - difficultyRampMaxTime) / (gameEndTime - difficultyRampMaxTime));
     }
 
     void CustomerSpawningUpdate()
@@ -196,6 +211,7 @@ public class GameManager : MonoBehaviour
         newCustomer.AssignItems(newCustomerItems);
         newCustomer.SetSpawnItems(customerItemRequestList, customerBox, customerWaitLocations[newCustomer.assignedWaitIndex]);
         newCustomer.SetPatience(customerPatienceSeconds);
+        newCustomer.SetMoveSpeed(customerWalkSpeed);
         newCustomer.AttachAccessories(GenerateAccessories());
     }
 
