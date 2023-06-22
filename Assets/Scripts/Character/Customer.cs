@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(NavMeshAgent))]
 public class Customer : MonoBehaviour
 {
     List<PackItem> requestedItems = new List<PackItem>();
@@ -13,6 +14,7 @@ public class Customer : MonoBehaviour
     public List<PackItem> items { get { return requestedItems; } }
 
     NavMeshAgent agent;
+    Animator animator;
 
     [HideInInspector] public int assignedWaitIndex = -1;
     [HideInInspector] public bool leaving = false;
@@ -31,6 +33,10 @@ public class Customer : MonoBehaviour
     [SerializeField] Transform earsLocation;
     [SerializeField] Transform neckLocation;
 
+    [Space, SerializeField] float idleSpeedMultiplierMin = 1;
+    [SerializeField] float idleSpeedMultiplierMax = 5;
+    [SerializeField] AnimationCurve idleSpeedCurve;
+
     public enum AccessoryTypes
     {
         Head,
@@ -43,6 +49,7 @@ public class Customer : MonoBehaviour
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        animator = GetComponentInChildren<Animator>();
         patienceMeter = GetComponentInChildren<Image>();
     }
 
@@ -64,6 +71,13 @@ public class Customer : MonoBehaviour
                 GameManager.instance.RemoveCustomer(this, true);
                 spawnedList = false; // ensures this block only executes once
             }
+        }
+
+        if (!CheckDestinationReached()) { // we should be walking
+            animator.SetBool("Walking", true);
+        } else {
+            animator.SetBool("Walking", false);
+            animator.SetFloat("Patience", Mathf.Lerp(idleSpeedMultiplierMin, idleSpeedMultiplierMax, idleSpeedCurve.Evaluate(1 - patience / startingPatience)));
         }
     }
 

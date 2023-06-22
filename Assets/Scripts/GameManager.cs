@@ -123,18 +123,20 @@ public class GameManager : MonoBehaviour
         }
 
         // ui setup
-        if (!playtimeUI.Contains(strikesUI)) {
-            playtimeUI.Add(strikesUI);
-        }
+        if (strikesUI) {
+            if (!playtimeUI.Contains(strikesUI)) {
+                playtimeUI.Add(strikesUI);
+            }
 
-        strikesImages = new Image[maxStrikes];
-        Image[] foundStrikesImages = strikesUI.GetComponentsInChildren<Image>();
+            strikesImages = new Image[maxStrikes];
+            Image[] foundStrikesImages = strikesUI.GetComponentsInChildren<Image>();
 
-        for (int i = 0; i < strikesImages.Length; ++i) {
-            if (i >= foundStrikesImages.Length) {
-                strikesImages[i] = Instantiate(strikesImages[0], strikesImages[0].transform.parent);
-            } else {
-                strikesImages[i] = foundStrikesImages[i];
+            for (int i = 0; i < strikesImages.Length; ++i) {
+                if (i >= foundStrikesImages.Length) {
+                    strikesImages[i] = Instantiate(strikesImages[0], strikesImages[0].transform.parent);
+                } else {
+                    strikesImages[i] = foundStrikesImages[i];
+                }
             }
         }
 
@@ -392,7 +394,7 @@ public class GameManager : MonoBehaviour
     #region Utility
     void AddFail()
     {
-        if (state != GameState.Playing) return;
+        if (state != GameState.Playing || strikesUI == null) return;
 
         strikesImages[currentStrikes].color = strikeFailColor;
 
@@ -434,8 +436,10 @@ public class GameManager : MonoBehaviour
         customerSpawnTimeBackupHelper = customerSpawnTimeSecondsHigh / 2;
         customerSpawnTimeBackupHelperTimer = customerSpawnTimeBackupHelper;
 
-        foreach(Image i in strikesImages) {
-            i.color = strikeFineColor;
+        if (strikesUI != null) {
+            foreach (Image i in strikesImages) {
+                i.color = strikeFineColor;
+            }
         }
 
         SetMenuUI(state);
