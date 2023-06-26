@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1834766768271536915}
   - component: {fileID: 5803064848477648290}
   - component: {fileID: 8969466872933669550}
+  - component: {fileID: -7032769069550916852}
   m_Layer: 0
   m_Name: SM_Lantern_01 (2)
   m_TagString: Item
@@ -230,3 +231,17 @@ MonoBehaviour:
   m_ForceGravityOnDetach: 0
   m_RetainTransformParent: 1
   m_AttachPointCompatibilityMode: 0
+--- !u!114 &-7032769069550916852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8840784468579330397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f927423649df14c45b8ed0c0abd01c2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: 8
+  name: Lantern
