@@ -331,9 +331,9 @@ Transform:
   - {fileID: 2035277031}
   - {fileID: 792235161}
   - {fileID: 772577287}
+  - {fileID: 1128698451}
   - {fileID: 626678698}
   - {fileID: 608415456}
-  - {fileID: 1128698451}
   - {fileID: 447840885}
   - {fileID: 2080692213}
   - {fileID: 844288008}
@@ -4062,7 +4062,7 @@ Transform:
   m_Children:
   - {fileID: 402615150}
   m_Father: {fileID: 28012426}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &624951102
 GameObject:
@@ -4231,7 +4231,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 28012426}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &628196736
 GameObject:
@@ -5583,23 +5583,26 @@ MonoBehaviour:
   - {fileID: 1521005141}
   - {fileID: 148562535}
   - {fileID: 367646987}
+  windowShopperLocations: []
   customerPresets:
-  - {fileID: 8322523548514040714, guid: b7a0010266033044db016dfc117584e9, type: 3}
+  - {fileID: 5325247837500838752, guid: aaab3309777d71f4184dc865b5a05bb3, type: 3}
   requestableObjects:
   - {fileID: 3605249200567503146, guid: 01a848301c4db2640ac4226b54b1fedc, type: 3}
   - {fileID: 7253887708915443713, guid: a3ee4c2222e62384da0d8b0d57088f3a, type: 3}
-  - {fileID: 7058569611539489546, guid: 2ca5aa678d5ed664f96db7405049783d, type: 3}
-  - {fileID: 5335359424188434869, guid: 11b76959029d51e4792b61fe3ebc7ef0, type: 3}
   - {fileID: 434387883719857466, guid: 3434f93bc89e8254291da8fd506ed896, type: 3}
   - {fileID: 4929627931606949452, guid: f53ddb49e019dde46a485ac217c86f3c, type: 3}
   - {fileID: 7490295975799548481, guid: 73dab9430e66da24282431230c4b5664, type: 3}
   - {fileID: 8840784468579330397, guid: dbe91fe9d31d0824aa172219fd26908e, type: 3}
   - {fileID: 4281379693562336176, guid: ff474bcf267874240b4c53dc98ea41c6, type: 3}
-  - {fileID: 968478617232035923, guid: b02a6e0bc621f9b4e949391aa2bfe8db, type: 3}
   - {fileID: 293225752438497160, guid: 15212020ffb728f41b69717d79e2ba45, type: 3}
   - {fileID: 1214732002257550078, guid: e4d8e2700af186148b127697c2911c01, type: 3}
   customerItemRequestList: {fileID: 936948041133378452, guid: 03142eb41bac75c4888d4c293e7604d0, type: 3}
-  customerBox: {fileID: 1428258020619914270, guid: 548a14fbbc663854caf4f028801748ee, type: 3}
+  customerBox: {fileID: 5538860725620277129, guid: 943c72115b532a34dbc0fe44523c70d5, type: 3}
+  maxWindowShoppers: 3
+  windowShopperStayDuration: 15
+  windowShopperWaitDuration: 4
+  attemptSpawnWindowShopperTime: 10
+  windowShopperCount: 0
   customerHeadAccessories: []
   customerEarsAccessories: []
   customerNeckAccessories: []
@@ -7560,7 +7563,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 28012426}
-  m_RootOrder: 11
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &1128698452
 MeshCollider:
@@ -14350,7 +14353,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5158359726207345971, guid: 943c72115b532a34dbc0fe44523c70d5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.467
+      value: -4.531
       objectReference: {fileID: 0}
     - target: {fileID: 5158359726207345971, guid: 943c72115b532a34dbc0fe44523c70d5, type: 3}
       propertyPath: m_LocalRotation.w
