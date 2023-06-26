@@ -67,7 +67,7 @@ public class Customer : MonoBehaviour
         } else if (!spawnedList && CheckDestinationReached()) { // this will run once upon reaching the counter for the first time
             SpawnItems();
             spawnedList = true;
-        } else if (spawnedList) { // we only spawn a list when we reach the counter, so this check is essentially ensuring we are at the counter
+        } else if (spawnedList && leavingLocation == null) { // we only spawn a list when we reach the counter, so this check is essentially ensuring we are at the counter
             patience -= Time.deltaTime;
             if (patienceMeter) patienceMeter.fillAmount = patience / startingPatience;
 
@@ -76,7 +76,6 @@ public class Customer : MonoBehaviour
 
             if (patience <= 0) {
                 GameManager.instance.RemoveCustomer(this, true);
-                spawnedList = false; // ensures this block only executes once
             }
         }
 
@@ -147,7 +146,8 @@ public class Customer : MonoBehaviour
 
     bool CheckDestinationReached()
     {
-        return !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance;
+        if (agent.isOnNavMesh) return !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance;
+        else return false;
     }
     #endregion
 
@@ -191,8 +191,6 @@ public class Customer : MonoBehaviour
 
     void SetRequestFinishAnimation(bool success)
     {
-        agent.enabled = false;
-
         if (success) {
             animator.SetTrigger("Success");
         } else if (animator) {
@@ -219,6 +217,8 @@ public class Customer : MonoBehaviour
 
     public void LeaveNow()
     {
+        leaving = true;
+
         GameManager.instance.customers.Remove(this);
         SetMoveTarget(leavingLocation);
     }

@@ -68,9 +68,10 @@ public class GameManager : MonoBehaviour
     [Header("Locations"), SerializeField] Transform[] customerSpawnLocations;
     [SerializeField] public List<WaitingLocation> customerWaitLocations = new List<WaitingLocation>();
     [SerializeField] Transform[] customerLeaveLocations;
-    Dictionary<int, bool> usedWaitLocations = new Dictionary<int, bool>();
-
     [SerializeField] List<Transform> windowShopperLocations = new List<Transform>();
+
+    Dictionary<int, bool> usedWaitLocations = new Dictionary<int, bool>();
+    Dictionary<int, bool> usedWindowshopperLocations = new Dictionary<int, bool>();
     #endregion
     #region Customers
     [Header("Customers"), SerializeField] GameObject[] customerPresets;
@@ -129,6 +130,10 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < customerWaitLocations.Count; ++i) {
             usedWaitLocations.Add(i, false);
+        }
+
+        for (int i = 0; i < windowShopperLocations.Count; ++i) {
+            usedWindowshopperLocations.Add(i, false);
         }
 
         // ui setup
@@ -319,6 +324,44 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
+    public bool AssignWindowShopperLocation(WindowShopper shopper)
+    {
+        bool successful = false;
+
+        List<int> attemptedNumbers = new List<int>();
+
+        while (!successful) {
+            int attemptingNumber = Random.Range(0, windowShopperLocations.Count);
+
+            if (attemptedNumbers.Count >= windowShopperLocations.Count) return false; // no available positions
+            if (attemptedNumbers.Contains(attemptingNumber)) attemptingNumber = (attemptingNumber + 1) % windowShopperLocations.Count;
+
+            if (AssignWindowShopperLocation(shopper, attemptingNumber)) {
+                successful = true;
+            } else {
+                attemptedNumbers.Add(attemptingNumber);
+            }
+        }
+
+        return true;
+    }
+
+    public bool AssignWindowShopperLocation(WindowShopper shopper, int index)
+    {
+        if (!usedWindowshopperLocations[index]) {
+            if (shopper.assignedIndex >= 0) { // customer had a different location assigned to them
+                usedWindowshopperLocations[shopper.assignedIndex] = false;
+            }
+
+            usedWindowshopperLocations[index] = true;
+            shopper.assignedIndex = index;
+            shopper.GoToLocation(windowShopperLocations[index].position);
+            return true;
+        }
+
+        return false;
+    }
+
     void AssignLeavingLocation(Customer customer)
     {
         AssignLeavingLocation(customer, Random.Range(0, customerLeaveLocations.Length));
@@ -330,7 +373,6 @@ public class GameManager : MonoBehaviour
             usedWaitLocations[customer.assignedWaitIndex] = false;
         }
 
-        customer.leaving = true;
         customer.leavingLocation = customerLeaveLocations[index];
     }
 

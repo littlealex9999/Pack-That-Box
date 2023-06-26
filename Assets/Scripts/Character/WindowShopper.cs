@@ -8,6 +8,8 @@ public class WindowShopper : MonoBehaviour
     List<Transform> windowShopLocations;
     Transform leaveLocation;
 
+    public int assignedIndex = -1;
+
     float stayTime = 4;
     float timeToLeave = 15;
 
@@ -21,7 +23,7 @@ public class WindowShopper : MonoBehaviour
 
     private void Start()
     {
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
         if (animator != null) animator.SetFloat("Patience", 1);
     }
 
@@ -38,7 +40,7 @@ public class WindowShopper : MonoBehaviour
             waitingTimer -= Time.deltaTime;
             if (waitingTimer <= 0) {
                 waiting = false;
-                GoToLocation(windowShopLocations[Random.Range(0, windowShopLocations.Count)].position);
+                GameManager.instance.AssignWindowShopperLocation(this);
             }
         }
 
@@ -61,10 +63,11 @@ public class WindowShopper : MonoBehaviour
 
     bool CheckDestinationReached()
     {
-        return !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance;
+        if (agent.isOnNavMesh) return !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance;
+        else return false;
     }
 
-    void GoToLocation(Vector3 position)
+    public void GoToLocation(Vector3 position)
     {
         agent.SetDestination(position);
     }
@@ -81,6 +84,6 @@ public class WindowShopper : MonoBehaviour
         leaveLocation = exitLocation;
 
         agent = GetComponent<NavMeshAgent>();
-        GoToLocation(windowShopLocations[Random.Range(0, windowShopLocations.Count)].position);
+        GameManager.instance.AssignWindowShopperLocation(this);
     }
 }
