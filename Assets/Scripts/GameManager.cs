@@ -230,6 +230,10 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Customers
+    #region Customer Creation
+    /// <summary>
+    /// Spawns a new Customer if it wouldn't raise the number past the cap
+    /// </summary>
     void CreateNewCustomer()
     {
         if (!AnyAvailableLocations()) return; // a customer cannot be spawned if there is nowhere for them to wait
@@ -257,24 +261,35 @@ public class GameManager : MonoBehaviour
         newCustomer.AttachAccessories(GenerateAccessories());
     }
 
+    /// <summary>
+    /// Spawns a new window shopper if it wouldn't raise the number over the cap
+    /// </summary>
     void CreateNewWindowShopper()
     {
-        if (windowShopperCount >= maxWindowShoppers) return;
+        if (windowShopperCount >= maxWindowShoppers) return; // a shopper cannot be spawned if there are too many
         ++windowShopperCount;
 
+        // choose a random spawn location
         Vector3 chosenSpawnLocation = customerSpawnLocations[Random.Range(0, customerSpawnLocations.Length)].position;
 
+        // create a random customer, add accessories, then disable everything unnecessary
         Customer newCustomer = Instantiate(customerPresets[Random.Range(0, customerPresets.Length)], chosenSpawnLocation, Quaternion.identity).GetComponent<Customer>();
         newCustomer.AttachAccessories(GenerateAccessories());
         newCustomer.SetupAsWindowShopper();
 
         newCustomer.enabled = false;
 
+        // assign all required variables
         WindowShopper shopper = newCustomer.AddComponent<WindowShopper>();
         shopper.AssignTimes(windowShopperStayDuration, windowShopperWaitDuration);
         shopper.AssignLocations(windowShopperLocations, customerLeaveLocations[Random.Range(0, customerLeaveLocations.Length)]);
     }
 
+    /// <summary>
+    /// Begins the process of removing a customer. The rest of the process is continued in the Customer class
+    /// </summary>
+    /// <param name="customer"></param>
+    /// <param name="failed"></param>
     public void RemoveCustomer(Customer customer, bool failed = false)
     {
         AssignLeavingLocation(customer);
@@ -286,6 +301,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Gets an array of random accessories for a character.
+    /// </summary>
+    /// <returns></returns>
+    GameObject[] GenerateAccessories()
+    {
+        return new GameObject[] {
+            ArrayHelper<GameObject>.GetRandomElement(customerHeadAccessories),
+            ArrayHelper<GameObject>.GetRandomElement(customerEarsAccessories),
+            ArrayHelper<GameObject>.GetRandomElement(customerNeckAccessories),
+        };
+    }
+    #endregion
+
+    #region Assign Locations
     bool AssignCounterLocation(Customer customer)
     {
         bool successful = false;
@@ -388,17 +418,7 @@ public class GameManager : MonoBehaviour
 
         return false;
     }
-
-    GameObject[] GenerateAccessories()
-    {
-        return new GameObject[] {
-            ArrayHelper<GameObject>.GetRandomElement(customerHeadAccessories),
-            ArrayHelper<GameObject>.GetRandomElement(customerEarsAccessories),
-            ArrayHelper<GameObject>.GetRandomElement(customerNeckAccessories),
-        };
-    }
-
-    
+    #endregion
     #endregion
 
     #region Boxes
