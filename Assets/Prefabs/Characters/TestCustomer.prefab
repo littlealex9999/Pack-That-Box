@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7923146467375233442}
   - component: {fileID: 2205413353426303407}
   m_Layer: 7
-  m_Name: CursedTestCharacter
+  m_Name: TestCustomer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
