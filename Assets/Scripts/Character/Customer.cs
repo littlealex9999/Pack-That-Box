@@ -23,6 +23,7 @@ public class Customer : MonoBehaviour
     GameObject itemRequestList;
     GameObject boxPrefab;
     bool spawnedList;
+    public Transform leavingLocation;
 
     [SerializeField, HideInInspector] float startingPatience;
     [SerializeField, HideInInspector] float patience;
@@ -81,14 +82,13 @@ public class Customer : MonoBehaviour
 
         if (!CheckDestinationReached()) { // we should be walking
             if (animator) {
-                animator.SetBool("Walking", true);
+                SetWalkingAnimation(true);
             }
         } else {
             float patienceEval = idleSpeedCurve.Evaluate(1 - patience / startingPatience);
 
             if (animator) {
-                animator.SetBool("Walking", false);
-                animator.SetFloat("Patience", Mathf.Lerp(idleSpeedMultiplierMin, idleSpeedMultiplierMax, patienceEval));
+                SetWalkingAnimation(false, Mathf.Lerp(idleSpeedMultiplierMin, idleSpeedMultiplierMax, patienceEval));
             }
 
             if (patienceEval > angryThreshold) {
@@ -151,12 +151,6 @@ public class Customer : MonoBehaviour
     }
     #endregion
 
-    public void SetPatience(float time)
-    {
-        startingPatience = time;
-        patience = time;
-    }
-
     #region Accessories
     public void AttachAccessories(GameObject[] accessories)
     {
@@ -184,8 +178,48 @@ public class Customer : MonoBehaviour
     }
     #endregion
 
+    #region animation
+    void SetWalkingAnimation(bool walking, float patience = 1)
+    {
+        if (walking) {
+            animator.SetBool("Walking", true);
+        } else {
+            animator.SetBool("Walking", false);
+            animator.SetFloat("Patience", patience);
+        }
+    }
+
+    void SetRequestFinishAnimation(bool success)
+    {
+        agent.enabled = false;
+
+        if (success) {
+            animator.SetTrigger("Success");
+        } else if (animator) {
+            animator.SetTrigger("Fail");
+        }
+    }
+    #endregion
+
+    public void SetPatience(float time)
+    {
+        startingPatience = time;
+        patience = time;
+    }
+
     public void SetupAsWindowShopper()
     {
         if (patienceMeter != null) patienceMeter.gameObject.SetActive(false);
+    }
+
+    public void EndRequest(bool failed)
+    {
+        SetRequestFinishAnimation(!failed);
+    }
+
+    public void LeaveNow()
+    {
+        GameManager.instance.customers.Remove(this);
+        SetMoveTarget(leavingLocation);
     }
 }

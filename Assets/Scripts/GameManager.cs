@@ -272,10 +272,13 @@ public class GameManager : MonoBehaviour
 
     public void RemoveCustomer(Customer customer, bool failed = false)
     {
-        currentCustomers.Remove(customer);
         AssignLeavingLocation(customer);
 
-        if (failed) AddFail();
+        customer.EndRequest(failed);
+
+        if (failed) {
+            AddFail();
+        }
     }
 
     bool AssignCounterLocation(Customer customer)
@@ -328,7 +331,7 @@ public class GameManager : MonoBehaviour
         }
 
         customer.leaving = true;
-        customer.SetMoveTarget(customerLeaveLocations[index]);
+        customer.leavingLocation = customerLeaveLocations[index];
     }
 
     /// <summary>
