@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 755363636492875813}
   - component: {fileID: 6689098499055376333}
   - component: {fileID: 2981336027469838028}
+  - component: {fileID: 7923146467375233442}
   m_Layer: 7
   m_Name: CursedTestCharacter
   m_TagString: Untagged
@@ -105,6 +106,20 @@ MonoBehaviour:
     m_RotationOrder: 4
   angryThreshold: 0
   activateOnAngry: []
+--- !u!136 &7923146467375233442
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5325247837500838752}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.45553622
+  m_Height: 1.2572513
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.52, z: 0}
 --- !u!1 &6727852171972341698
 GameObject:
   m_ObjectHideFlags: 0
