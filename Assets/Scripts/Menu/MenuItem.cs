@@ -8,10 +8,31 @@ public class MenuItem : MonoBehaviour
     {
         Start,
         Stop,
+        ClearItems,
         Quit,
     }
 
     public MenuFunction function;
+
+    Vector3 startingPos;
+    [SerializeField] Vector3 offset;
+    [SerializeField] float maxDistance = 1;
+
+    public Vector3 startPosition { get { return startingPos; } }
+    public Vector3 startingOffset { get { return offset; } }
+    public float range { get { return maxDistance; } }
+
+    private void Start()
+    {
+        startingPos = transform.position + startingOffset;
+    }
+
+    private void Update()
+    {
+        if ((transform.position - startingPos).sqrMagnitude > maxDistance * maxDistance) {
+            transform.position = startingPos;
+        }
+    }
 
     /// <summary>
     /// Performs the action this item is meant to do
@@ -24,6 +45,9 @@ public class MenuItem : MonoBehaviour
                 break;
             case MenuFunction.Stop:
                 StopGame();
+                break;
+            case MenuFunction.ClearItems:
+                ClearItems();
                 break;
             case MenuFunction.Quit:
                 QuitGame();
@@ -41,6 +65,11 @@ public class MenuItem : MonoBehaviour
     void StopGame()
     {
         GameManager.instance.EndGame();
+    }
+
+    void ClearItems()
+    {
+        GameManager.instance.ClearItems();
     }
 
     void QuitGame()
