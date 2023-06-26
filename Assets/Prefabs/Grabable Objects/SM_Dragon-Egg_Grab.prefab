@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6822120780920466365}
   - component: {fileID: 643845045318174646}
   - component: {fileID: 2396265648798297770}
+  - component: {fileID: -3480746577726044141}
   m_Layer: 0
   m_Name: SM_Dragon-Egg_Grab
   m_TagString: Item
@@ -231,3 +232,17 @@ MonoBehaviour:
   m_ForceGravityOnDetach: 0
   m_RetainTransformParent: 1
   m_AttachPointCompatibilityMode: 0
+--- !u!114 &-3480746577726044141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4929627931606949452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f927423649df14c45b8ed0c0abd01c2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: 6
+  name: Dragon Egg

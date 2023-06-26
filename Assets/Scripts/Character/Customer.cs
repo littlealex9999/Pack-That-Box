@@ -73,12 +73,12 @@ public class Customer : MonoBehaviour
             }
         }
 
-        if (!CheckDestinationReached()) { // we should be walking
-            animator.SetBool("Walking", true);
-        } else {
-            animator.SetBool("Walking", false);
-            animator.SetFloat("Patience", Mathf.Lerp(idleSpeedMultiplierMin, idleSpeedMultiplierMax, idleSpeedCurve.Evaluate(1 - patience / startingPatience)));
-        }
+        //if (!CheckDestinationReached()) { // we should be walking
+        //    animator.SetBool("Walking", true);
+        //} else {
+        //    animator.SetBool("Walking", false);
+        //    animator.SetFloat("Patience", Mathf.Lerp(idleSpeedMultiplierMin, idleSpeedMultiplierMax, idleSpeedCurve.Evaluate(1 - patience / startingPatience)));
+        //}
     }
 
     #region Items
