@@ -157,6 +157,7 @@ public class Customer : MonoBehaviour
         patience = time;
     }
 
+    #region Accessories
     public void AttachAccessories(GameObject[] accessories)
     {
         foreach (GameObject accessory in accessories) {
@@ -180,5 +181,11 @@ public class Customer : MonoBehaviour
             default:
                 return null;
         }
+    }
+    #endregion
+
+    public void SetupAsWindowShopper()
+    {
+        if (patienceMeter != null) patienceMeter.gameObject.SetActive(false);
     }
 }

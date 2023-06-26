@@ -69,12 +69,21 @@ public class GameManager : MonoBehaviour
     [SerializeField] public List<WaitingLocation> customerWaitLocations = new List<WaitingLocation>();
     [SerializeField] Transform[] customerLeaveLocations;
     Dictionary<int, bool> usedWaitLocations = new Dictionary<int, bool>();
+
+    [SerializeField] List<Transform> windowShopperLocations = new List<Transform>();
     #endregion
     #region Customers
     [Header("Customers"), SerializeField] GameObject[] customerPresets;
     [SerializeField] GameObject[] requestableObjects;
     [SerializeField] GameObject customerItemRequestList;
     [SerializeField] GameObject customerBox;
+    [SerializeField] int maxWindowShoppers = 3;
+    [SerializeField] float windowShopperStayDuration = 15;
+    [SerializeField] float windowShopperWaitDuration = 4;
+    [SerializeField] float attemptSpawnWindowShopperTime = 10;
+
+    [HideInInspector] public int windowShopperCount;
+    float windowShopperSpawnTimer;
     #endregion
     #region Customer Accessories
     [Header("Customer Accessories"), SerializeField] GameObject[] customerHeadAccessories;
@@ -141,6 +150,9 @@ public class GameManager : MonoBehaviour
         }
 
         SetMenuUI(state);
+
+        // miscellaneous setup
+        windowShopperSpawnTimer = attemptSpawnWindowShopperTime;
     }
 
     void Update()
@@ -175,6 +187,12 @@ public class GameManager : MonoBehaviour
                     }
                 }
                 break;
+        }
+
+        windowShopperSpawnTimer -= Time.deltaTime;
+        if (windowShopperSpawnTimer <= 0) {
+            windowShopperSpawnTimer = attemptSpawnWindowShopperTime;
+            CreateNewWindowShopper();
         }
     }
     #endregion
@@ -232,6 +250,24 @@ public class GameManager : MonoBehaviour
         newCustomer.SetPatience(customerPatienceSeconds);
         newCustomer.SetMoveSpeed(customerWalkSpeed);
         newCustomer.AttachAccessories(GenerateAccessories());
+    }
+
+    void CreateNewWindowShopper()
+    {
+        if (windowShopperCount >= maxWindowShoppers) return;
+        ++windowShopperCount;
+
+        Vector3 chosenSpawnLocation = customerSpawnLocations[Random.Range(0, customerSpawnLocations.Length)].position;
+
+        Customer newCustomer = Instantiate(customerPresets[Random.Range(0, customerPresets.Length)], chosenSpawnLocation, Quaternion.identity).GetComponent<Customer>();
+        newCustomer.AttachAccessories(GenerateAccessories());
+        newCustomer.SetupAsWindowShopper();
+
+        newCustomer.enabled = false;
+
+        WindowShopper shopper = newCustomer.AddComponent<WindowShopper>();
+        shopper.AssignTimes(windowShopperStayDuration, windowShopperWaitDuration);
+        shopper.AssignLocations(windowShopperLocations, customerLeaveLocations[Random.Range(0, customerLeaveLocations.Length)]);
     }
 
     public void RemoveCustomer(Customer customer, bool failed = false)
