@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8147754327250238328
+--- !u!1 &5918019822793369789
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,46 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8816205051645567426}
-  - component: {fileID: 5617862704797167207}
-  - component: {fileID: 7643276058955438765}
+  - component: {fileID: 6443198615763677703}
+  - component: {fileID: 7981799751424081314}
+  - component: {fileID: 5269769962552953192}
   m_Layer: 0
-  m_Name: SM_Candle_03
+  m_Name: SM_Pokeball_Scenery
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8816205051645567426
+--- !u!4 &6443198615763677703
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8147754327250238328}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.94621915, y: 0.77324027, z: -4.6306777}
+  m_GameObject: {fileID: 5918019822793369789}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.194, y: 1.0305979, z: -0.394}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &5617862704797167207
+--- !u!33 &7981799751424081314
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8147754327250238328}
-  m_Mesh: {fileID: 5674204295643470209, guid: 374ab8dc9743e564d80ad4d5ce520069, type: 3}
---- !u!23 &7643276058955438765
+  m_GameObject: {fileID: 5918019822793369789}
+  m_Mesh: {fileID: 1987000356099552794, guid: 2db83e5d39f4c5a489790c669382dd84, type: 3}
+--- !u!23 &5269769962552953192
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8147754327250238328}
+  m_GameObject: {fileID: 5918019822793369789}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c49f58bb2b00a0d4684106c798c6db3e, type: 2}
+  - {fileID: 2100000, guid: 33eda7b9a5eeaee48b4aaa4022cb553a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
