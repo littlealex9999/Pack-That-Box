@@ -36,6 +36,8 @@ public class Customer : MonoBehaviour
     [Space, SerializeField] float idleSpeedMultiplierMin = 1;
     [SerializeField] float idleSpeedMultiplierMax = 5;
     [SerializeField] AnimationCurve idleSpeedCurve;
+    [SerializeField, Range(0, 1)] float angryThreshold;
+    [SerializeField] GameObject[] activateOnAngry;
 
     public enum AccessoryTypes
     {
@@ -51,6 +53,10 @@ public class Customer : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
         patienceMeter = GetComponentInChildren<Image>();
+
+        foreach (GameObject go in activateOnAngry) {
+            go.SetActive(false);
+        }
     }
 
     void Update()
@@ -73,12 +79,24 @@ public class Customer : MonoBehaviour
             }
         }
 
-        //if (!CheckDestinationReached()) { // we should be walking
-        //    animator.SetBool("Walking", true);
-        //} else {
-        //    animator.SetBool("Walking", false);
-        //    animator.SetFloat("Patience", Mathf.Lerp(idleSpeedMultiplierMin, idleSpeedMultiplierMax, idleSpeedCurve.Evaluate(1 - patience / startingPatience)));
-        //}
+        if (!CheckDestinationReached()) { // we should be walking
+            if (animator) {
+                animator.SetBool("Walking", true);
+            }
+        } else {
+            float patienceEval = idleSpeedCurve.Evaluate(1 - patience / startingPatience);
+
+            if (animator) {
+                animator.SetBool("Walking", false);
+                animator.SetFloat("Patience", Mathf.Lerp(idleSpeedMultiplierMin, idleSpeedMultiplierMax, patienceEval));
+            }
+
+            if (patienceEval > angryThreshold) {
+                foreach (GameObject go in activateOnAngry) {
+                    go.SetActive(true);
+                }
+            }
+        }
     }
 
     #region Items

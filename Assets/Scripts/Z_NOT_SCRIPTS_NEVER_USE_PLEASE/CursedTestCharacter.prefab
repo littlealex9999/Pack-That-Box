@@ -102,6 +102,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  angryThreshold: 0
+  activateOnAngry: []
 --- !u!1 &6727852171972341698
 GameObject:
   m_ObjectHideFlags: 0
