@@ -23,6 +23,7 @@ public class Customer : MonoBehaviour
     GameObject itemRequestList;
     GameObject boxPrefab;
     bool spawnedList;
+    public Transform leavingLocation;
 
     [SerializeField, HideInInspector] float startingPatience;
     [SerializeField, HideInInspector] float patience;
@@ -66,7 +67,7 @@ public class Customer : MonoBehaviour
         } else if (!spawnedList && CheckDestinationReached()) { // this will run once upon reaching the counter for the first time
             SpawnItems();
             spawnedList = true;
-        } else if (spawnedList) { // we only spawn a list when we reach the counter, so this check is essentially ensuring we are at the counter
+        } else if (spawnedList && leavingLocation == null) { // we only spawn a list when we reach the counter, so this check is essentially ensuring we are at the counter
             patience -= Time.deltaTime;
             if (patienceMeter) patienceMeter.fillAmount = patience / startingPatience;
 
@@ -75,20 +76,18 @@ public class Customer : MonoBehaviour
 
             if (patience <= 0) {
                 GameManager.instance.RemoveCustomer(this, true);
-                spawnedList = false; // ensures this block only executes once
             }
         }
 
         if (!CheckDestinationReached()) { // we should be walking
             if (animator) {
-                animator.SetBool("Walking", true);
+                SetWalkingAnimation(true);
             }
         } else {
             float patienceEval = idleSpeedCurve.Evaluate(1 - patience / startingPatience);
 
             if (animator) {
-                animator.SetBool("Walking", false);
-                animator.SetFloat("Patience", Mathf.Lerp(idleSpeedMultiplierMin, idleSpeedMultiplierMax, patienceEval));
+                SetWalkingAnimation(false, Mathf.Lerp(idleSpeedMultiplierMin, idleSpeedMultiplierMax, patienceEval));
             }
 
             if (patienceEval > angryThreshold) {
@@ -147,16 +146,12 @@ public class Customer : MonoBehaviour
 
     bool CheckDestinationReached()
     {
-        return !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance;
+        if (agent.isOnNavMesh) return !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance;
+        else return false;
     }
     #endregion
 
-    public void SetPatience(float time)
-    {
-        startingPatience = time;
-        patience = time;
-    }
-
+    #region Accessories
     public void AttachAccessories(GameObject[] accessories)
     {
         foreach (GameObject accessory in accessories) {
@@ -180,5 +175,51 @@ public class Customer : MonoBehaviour
             default:
                 return null;
         }
+    }
+    #endregion
+
+    #region animation
+    void SetWalkingAnimation(bool walking, float patience = 1)
+    {
+        if (walking) {
+            animator.SetBool("Walking", true);
+        } else {
+            animator.SetBool("Walking", false);
+            animator.SetFloat("Patience", patience);
+        }
+    }
+
+    void SetRequestFinishAnimation(bool success)
+    {
+        if (success) {
+            animator.SetTrigger("Success");
+        } else if (animator) {
+            animator.SetTrigger("Fail");
+        }
+    }
+    #endregion
+
+    public void SetPatience(float time)
+    {
+        startingPatience = time;
+        patience = time;
+    }
+
+    public void SetupAsWindowShopper()
+    {
+        if (patienceMeter != null) patienceMeter.gameObject.SetActive(false);
+    }
+
+    public void EndRequest(bool failed)
+    {
+        SetRequestFinishAnimation(!failed);
+    }
+
+    public void LeaveNow()
+    {
+        leaving = true;
+
+        GameManager.instance.customers.Remove(this);
+        SetMoveTarget(leavingLocation);
     }
 }

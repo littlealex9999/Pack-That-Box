@@ -68,13 +68,23 @@ public class GameManager : MonoBehaviour
     [Header("Locations"), SerializeField] Transform[] customerSpawnLocations;
     [SerializeField] public List<WaitingLocation> customerWaitLocations = new List<WaitingLocation>();
     [SerializeField] Transform[] customerLeaveLocations;
+    [SerializeField] List<Transform> windowShopperLocations = new List<Transform>();
+
     Dictionary<int, bool> usedWaitLocations = new Dictionary<int, bool>();
+    Dictionary<int, bool> usedWindowshopperLocations = new Dictionary<int, bool>();
     #endregion
     #region Customers
     [Header("Customers"), SerializeField] GameObject[] customerPresets;
     [SerializeField] GameObject[] requestableObjects;
     [SerializeField] GameObject customerItemRequestList;
     [SerializeField] GameObject customerBox;
+    [SerializeField] int maxWindowShoppers = 3;
+    [SerializeField] float windowShopperStayDuration = 15;
+    [SerializeField] float windowShopperWaitDuration = 4;
+    [SerializeField] float attemptSpawnWindowShopperTime = 10;
+
+    [HideInInspector] public int windowShopperCount;
+    float windowShopperSpawnTimer;
     #endregion
     #region Customer Accessories
     [Header("Customer Accessories"), SerializeField] GameObject[] customerHeadAccessories;
@@ -122,6 +132,10 @@ public class GameManager : MonoBehaviour
             usedWaitLocations.Add(i, false);
         }
 
+        for (int i = 0; i < windowShopperLocations.Count; ++i) {
+            usedWindowshopperLocations.Add(i, false);
+        }
+
         // ui setup
         if (strikesUI) {
             if (!playtimeUI.Contains(strikesUI)) {
@@ -141,6 +155,9 @@ public class GameManager : MonoBehaviour
         }
 
         SetMenuUI(state);
+
+        // miscellaneous setup
+        windowShopperSpawnTimer = attemptSpawnWindowShopperTime;
     }
 
     void Update()
@@ -176,6 +193,12 @@ public class GameManager : MonoBehaviour
                 }
                 break;
         }
+
+        windowShopperSpawnTimer -= Time.deltaTime;
+        if (windowShopperSpawnTimer <= 0) {
+            windowShopperSpawnTimer = attemptSpawnWindowShopperTime;
+            CreateNewWindowShopper();
+        }
     }
     #endregion
 
@@ -207,6 +230,10 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Customers
+    #region Customer Creation
+    /// <summary>
+    /// Spawns a new Customer if it wouldn't raise the number past the cap
+    /// </summary>
     void CreateNewCustomer()
     {
         if (!AnyAvailableLocations()) return; // a customer cannot be spawned if there is nowhere for them to wait
@@ -234,14 +261,61 @@ public class GameManager : MonoBehaviour
         newCustomer.AttachAccessories(GenerateAccessories());
     }
 
-    public void RemoveCustomer(Customer customer, bool failed = false)
+    /// <summary>
+    /// Spawns a new window shopper if it wouldn't raise the number over the cap
+    /// </summary>
+    void CreateNewWindowShopper()
     {
-        currentCustomers.Remove(customer);
-        AssignLeavingLocation(customer);
+        if (windowShopperCount >= maxWindowShoppers) return; // a shopper cannot be spawned if there are too many
+        ++windowShopperCount;
 
-        if (failed) AddFail();
+        // choose a random spawn location
+        Vector3 chosenSpawnLocation = customerSpawnLocations[Random.Range(0, customerSpawnLocations.Length)].position;
+
+        // create a random customer, add accessories, then disable everything unnecessary
+        Customer newCustomer = Instantiate(customerPresets[Random.Range(0, customerPresets.Length)], chosenSpawnLocation, Quaternion.identity).GetComponent<Customer>();
+        newCustomer.AttachAccessories(GenerateAccessories());
+        newCustomer.SetupAsWindowShopper();
+
+        newCustomer.enabled = false;
+
+        // assign all required variables
+        WindowShopper shopper = newCustomer.AddComponent<WindowShopper>();
+        shopper.AssignTimes(windowShopperStayDuration, windowShopperWaitDuration);
+        shopper.AssignLocations(windowShopperLocations, customerLeaveLocations[Random.Range(0, customerLeaveLocations.Length)]);
     }
 
+    /// <summary>
+    /// Begins the process of removing a customer. The rest of the process is continued in the Customer class
+    /// </summary>
+    /// <param name="customer"></param>
+    /// <param name="failed"></param>
+    public void RemoveCustomer(Customer customer, bool failed = false)
+    {
+        AssignLeavingLocation(customer);
+
+        customer.EndRequest(failed);
+
+        if (failed) {
+            AddFail();
+        }
+    }
+
+    /// <summary>
+    /// Gets an array of random accessories for a character.
+    /// </summary>
+    /// <returns></returns>
+    GameObject[] GenerateAccessories()
+    {
+        return new GameObject[] {
+            ArrayHelper<GameObject>.GetRandomElement(customerHeadAccessories),
+            ArrayHelper<GameObject>.GetRandomElement(customerEarsAccessories),
+            ArrayHelper<GameObject>.GetRandomElement(customerNeckAccessories),
+        };
+    }
+    #endregion
+
+    #region Assign Locations
     bool AssignCounterLocation(Customer customer)
     {
         bool successful = false;
@@ -280,6 +354,44 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
+    public bool AssignWindowShopperLocation(WindowShopper shopper)
+    {
+        bool successful = false;
+
+        List<int> attemptedNumbers = new List<int>();
+
+        while (!successful) {
+            int attemptingNumber = Random.Range(0, windowShopperLocations.Count);
+
+            if (attemptedNumbers.Count >= windowShopperLocations.Count) return false; // no available positions
+            if (attemptedNumbers.Contains(attemptingNumber)) attemptingNumber = (attemptingNumber + 1) % windowShopperLocations.Count;
+
+            if (AssignWindowShopperLocation(shopper, attemptingNumber)) {
+                successful = true;
+            } else {
+                attemptedNumbers.Add(attemptingNumber);
+            }
+        }
+
+        return true;
+    }
+
+    public bool AssignWindowShopperLocation(WindowShopper shopper, int index)
+    {
+        if (!usedWindowshopperLocations[index]) {
+            if (shopper.assignedIndex >= 0) { // customer had a different location assigned to them
+                usedWindowshopperLocations[shopper.assignedIndex] = false;
+            }
+
+            usedWindowshopperLocations[index] = true;
+            shopper.assignedIndex = index;
+            shopper.GoToLocation(windowShopperLocations[index].position);
+            return true;
+        }
+
+        return false;
+    }
+
     void AssignLeavingLocation(Customer customer)
     {
         AssignLeavingLocation(customer, Random.Range(0, customerLeaveLocations.Length));
@@ -291,8 +403,7 @@ public class GameManager : MonoBehaviour
             usedWaitLocations[customer.assignedWaitIndex] = false;
         }
 
-        customer.leaving = true;
-        customer.SetMoveTarget(customerLeaveLocations[index]);
+        customer.leavingLocation = customerLeaveLocations[index];
     }
 
     /// <summary>
@@ -307,17 +418,7 @@ public class GameManager : MonoBehaviour
 
         return false;
     }
-
-    GameObject[] GenerateAccessories()
-    {
-        return new GameObject[] {
-            ArrayHelper<GameObject>.GetRandomElement(customerHeadAccessories),
-            ArrayHelper<GameObject>.GetRandomElement(customerEarsAccessories),
-            ArrayHelper<GameObject>.GetRandomElement(customerNeckAccessories),
-        };
-    }
-
-    
+    #endregion
     #endregion
 
     #region Boxes
