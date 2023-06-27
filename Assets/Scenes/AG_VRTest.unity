@@ -6544,9 +6544,9 @@ MonoBehaviour:
   customerSpawnTimeSecondsLow: 5
   customerWalkSpeedHigh: 7
   customerWalkSpeedLow: 3.5
-  customerItemsRequestedMaxHigh: 5
-  customerItemsRequestedMaxLow: 3
-  customerItemsRequestedMinHigh: 3
+  customerItemsRequestedMaxHigh: 1
+  customerItemsRequestedMaxLow: 1
+  customerItemsRequestedMinHigh: 1
   customerItemsRequestedMinLow: 1
   minutesToMaxDifficultyRamp: 3
   customerDifficultyCurve:
