@@ -5711,6 +5711,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scoreboard: {fileID: 11400000, guid: 340182e303c12ae49aebd9b7764b3ceb, type: 2}
+  clearItemsOnGameEnd: 1
   minutesToGameEnd: 5
   maxStrikes: 3
   customerPatienceSecondsHigh: 30

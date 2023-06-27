@@ -17,4 +17,6 @@ public class AudioManager : MonoBehaviour
     public AudioClip[] clearItemsSounds;
     public AudioClip[] happyCustomerSounds;
     public AudioClip[] angryCustomerSounds;
+    public AudioClip[] gameStartSounds;
+    public AudioClip[] gameEndSounds;
 }

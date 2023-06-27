@@ -23,9 +23,11 @@ public class GameManager : MonoBehaviour
 
     GameState state = GameState.Menu;
     #endregion
-    #region Required Miscellaneous
-    [Header("Required Miscellaneous"), SerializeField] Score scoreboard;
+    #region Miscellaneous
+    [Header("Miscellaneous"), SerializeField] Score scoreboard;
     float score;
+
+    [SerializeField] bool clearItemsOnGameEnd = true;
     #endregion
     #region Main Game Settings
     [Header("Main Game Settings"), SerializeField] float minutesToGameEnd;
@@ -549,6 +551,10 @@ public class GameManager : MonoBehaviour
         }
 
         SetMenuUI(state);
+
+        if (AudioManager.instance != null) {
+            AudioManager.instance.audioSource.PlayOneShot(ArrayHelper<AudioClip>.GetRandomElement(AudioManager.instance.gameStartSounds));
+        }
     }
 
     public void EndGame()
@@ -569,7 +575,11 @@ public class GameManager : MonoBehaviour
 
         SetMenuUI(state);
 
-        ClearItems();
+        if (AudioManager.instance != null) {
+            AudioManager.instance.audioSource.PlayOneShot(ArrayHelper<AudioClip>.GetRandomElement(AudioManager.instance.gameEndSounds));
+        }
+
+        if (clearItemsOnGameEnd) ClearItems();
     }
 
     [ContextMenu("Clear Items")]
