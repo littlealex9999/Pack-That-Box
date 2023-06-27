@@ -184,7 +184,10 @@ public class GameManager : MonoBehaviour
 
                 for (int i = 0; i < preparedBoxes.Count; ++i) {
                     if (CheckBoxDone(preparedBoxes[i], out Customer happyCustomer, out float scoreChange)) {
-                        Destroy(preparedBoxes[i].gameObject); // onDestroy on boxes removes them from preparedBoxes
+                        Box b = preparedBoxes[i];
+                        preparedBoxes.Remove(b);
+                        Destroy(b.gameObject);
+
                         --i; // our list is smaller, so we have to step back to ensure we check all elements
 
                         RemoveCustomer(happyCustomer);
