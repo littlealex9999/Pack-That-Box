@@ -29,9 +29,9 @@ public class Customer : MonoBehaviour
     [SerializeField, HideInInspector] float startingPatience;
     [SerializeField, HideInInspector] float patience;
 
-    Image patienceMeter;
+    [SerializeField] Image patienceMeter;
 
-    [SerializeField] Transform headLocation;
+    [Space, SerializeField] Transform headLocation;
     [SerializeField] Transform earsLocation;
     [SerializeField] Transform neckLocation;
 
@@ -53,7 +53,6 @@ public class Customer : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
         audioSource = GetComponent<AudioSource>();
-        patienceMeter = GetComponentInChildren<Image>();
 
         foreach (GameObject go in activateOnAngry) {
             go.SetActive(false);
