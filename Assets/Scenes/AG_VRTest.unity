@@ -10403,18 +10403,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: VR controller
       objectReference: {fileID: 0}
-    - target: {fileID: 6341788158814118038, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6341788158814118038, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6341788158814118038, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
 --- !u!1 &1717415353
