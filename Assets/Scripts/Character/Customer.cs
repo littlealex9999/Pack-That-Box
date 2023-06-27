@@ -15,6 +15,7 @@ public class Customer : MonoBehaviour
 
     NavMeshAgent agent;
     Animator animator;
+    AudioSource audioSource;
 
     [HideInInspector] public int assignedWaitIndex = -1;
     [HideInInspector] public bool leaving = false;
@@ -45,14 +46,13 @@ public class Customer : MonoBehaviour
         Head,
         Ears,
         Neck,
-
-        Count
     }
 
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
+        audioSource = GetComponent<AudioSource>();
         patienceMeter = GetComponentInChildren<Image>();
 
         foreach (GameObject go in activateOnAngry) {
@@ -189,12 +189,14 @@ public class Customer : MonoBehaviour
         }
     }
 
-    void SetRequestFinishAnimation(bool success)
+    void SetRequestFinishAnimationAudio(bool success)
     {
         if (success) {
-            animator.SetTrigger("Success");
+            if (animator != null) animator.SetTrigger("Success");
+            if (audioSource != null) audioSource.PlayOneShot(ArrayHelper<AudioClip>.GetRandomElement(AudioManager.instance.happyCustomerSounds));
         } else if (animator) {
-            animator.SetTrigger("Fail");
+            if (animator != null) animator.SetTrigger("Fail");
+            if (audioSource != null) audioSource.PlayOneShot(ArrayHelper<AudioClip>.GetRandomElement(AudioManager.instance.angryCustomerSounds));
         }
     }
     #endregion
@@ -212,7 +214,7 @@ public class Customer : MonoBehaviour
 
     public void EndRequest(bool failed)
     {
-        SetRequestFinishAnimation(!failed);
+        SetRequestFinishAnimationAudio(!failed);
     }
 
     public void LeaveNow()

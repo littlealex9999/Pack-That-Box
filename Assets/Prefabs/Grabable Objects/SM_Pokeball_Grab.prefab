@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2230702098763731606}
   - component: {fileID: 956652841253738258}
   - component: {fileID: -1715117863585687457}
+  - component: {fileID: 259924621605264039}
   m_Layer: 0
   m_Name: SM_Pokeball_Grab
   m_TagString: Item
@@ -64,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -4597107667637640440, guid: 2db83e5d39f4c5a489790c669382dd84, type: 3}
+  - {fileID: 2100000, guid: 33eda7b9a5eeaee48b4aaa4022cb553a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -231,3 +232,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 11
   name: Pokeball
+--- !u!135 &259924621605264039
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293225752438497160}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.11315474
+  m_Center: {x: 0, y: -0.0000000037252903, z: 0}
