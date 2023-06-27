@@ -18,6 +18,8 @@ public class MenuItem : MonoBehaviour
     [SerializeField] Vector3 offset;
     [SerializeField] float maxDistance = 1;
 
+    Rigidbody rb;
+
     public Vector3 startPosition { get { return startingPos; } }
     public Vector3 startingOffset { get { return offset; } }
     public float range { get { return maxDistance; } }
@@ -25,14 +27,21 @@ public class MenuItem : MonoBehaviour
     private void Start()
     {
         startingPos = transform.position + startingOffset;
+        rb = GetComponent<Rigidbody>();
     }
 
     private void Update()
     {
         if ((transform.position - startingPos).sqrMagnitude > maxDistance * maxDistance) {
-            transform.position = startingPos;
+            ResetPosition();
         }
     }
+
+    void ResetPosition()
+    {
+        transform.position = startingPos;
+        rb.velocity = Vector3.zero;
+    }    
 
     /// <summary>
     /// Performs the action this item is meant to do
@@ -55,6 +64,8 @@ public class MenuItem : MonoBehaviour
             default:
                 break;
         }
+
+        ResetPosition();
     }
 
     void StartGame()
