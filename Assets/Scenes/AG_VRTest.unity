@@ -5450,7 +5450,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e419125364fc1a4499dfaeb1caa3bad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  function: 1
+  function: 2
   offset: {x: 0, y: 0, z: 0}
   maxDistance: 1
 --- !u!114 &855830195
@@ -10402,6 +10402,18 @@ PrefabInstance:
     - target: {fileID: 6341788158589099805, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
       propertyPath: m_Name
       value: VR controller
+      objectReference: {fileID: 0}
+    - target: {fileID: 6341788158814118038, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6341788158814118038, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6341788158814118038, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad0309a2271c93a429a428231914ed6e, type: 3}
