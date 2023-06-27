@@ -33,10 +33,15 @@ public class MenuItem : MonoBehaviour
     private void Update()
     {
         if ((transform.position - startingPos).sqrMagnitude > maxDistance * maxDistance) {
-            transform.position = startingPos;
-            rb.velocity = Vector3.zero;
+            ResetPosition();
         }
     }
+
+    void ResetPosition()
+    {
+        transform.position = startingPos;
+        rb.velocity = Vector3.zero;
+    }    
 
     /// <summary>
     /// Performs the action this item is meant to do
@@ -59,6 +64,8 @@ public class MenuItem : MonoBehaviour
             default:
                 break;
         }
+
+        ResetPosition();
     }
 
     void StartGame()
