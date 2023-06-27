@@ -119,11 +119,10 @@ public class GameManager : MonoBehaviour
     #region Unity
     void Start()
     {
-        // instance setup
         if (instance == null) instance = this;
         else Destroy(this);
 
-        // score setup
+        #region Score
         if (FileSystem.LoadFile("scores.txt", out Score loadedScores)) {
             scoreboard = loadedScores;
         }
@@ -135,8 +134,9 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < windowShopperLocations.Count; ++i) {
             usedWindowshopperLocations.Add(i, false);
         }
+        #endregion
 
-        // ui setup
+        #region UI
         if (strikesUI) {
             if (!playtimeUI.Contains(strikesUI)) {
                 playtimeUI.Add(strikesUI);
@@ -155,9 +155,12 @@ public class GameManager : MonoBehaviour
         }
 
         SetMenuUI(state);
+        #endregion
 
-        // miscellaneous setup
+        #region Window Shoppers
         windowShopperSpawnTimer = attemptSpawnWindowShopperTime;
+        if (maxWindowShoppers > windowShopperLocations.Count) maxWindowShoppers = windowShopperLocations.Count;
+        #endregion
     }
 
     void Update()
@@ -278,7 +281,6 @@ public class GameManager : MonoBehaviour
         // create a random customer, add accessories, then disable everything unnecessary
         Customer newCustomer = Instantiate(customerPresets[Random.Range(0, customerPresets.Length)], chosenSpawnLocation, Quaternion.identity).GetComponent<Customer>();
         newCustomer.AttachAccessories(GenerateAccessories());
-        newCustomer.SetupAsWindowShopper();
 
         newCustomer.enabled = false;
 
