@@ -5,6 +5,7 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager instance;
+    public AudioSource audioSource;
 
     void Start()
     {
@@ -12,6 +13,8 @@ public class AudioManager : MonoBehaviour
         else Destroy(this);
     }
 
-    public AudioClip mainSong;
     public AudioClip[] doorSounds;
+    public AudioClip[] clearItemsSounds;
+    public AudioClip[] happyCustomerSounds;
+    public AudioClip[] angryCustomerSounds;
 }

@@ -575,6 +575,10 @@ public class GameManager : MonoBehaviour
         }
 
         clearList.Clear();
+
+        if (AudioManager.instance != null) {
+            AudioManager.instance.audioSource.PlayOneShot(ArrayHelper<AudioClip>.GetRandomElement(AudioManager.instance.clearItemsSounds));
+        }
     }
 
     void SetMenuUI(GameState gs)
