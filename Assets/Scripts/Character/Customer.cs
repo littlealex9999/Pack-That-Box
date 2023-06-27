@@ -57,6 +57,8 @@ public class Customer : MonoBehaviour
         foreach (GameObject go in activateOnAngry) {
             go.SetActive(false);
         }
+
+        if (patienceMeter != null) patienceMeter.transform.parent.gameObject.SetActive(false);
     }
 
     void Update()
@@ -66,6 +68,8 @@ public class Customer : MonoBehaviour
         } else if (!spawnedList && CheckDestinationReached()) { // this will run once upon reaching the counter for the first time
             SpawnItems();
             spawnedList = true;
+
+            patienceMeter.transform.parent.gameObject.SetActive(true);
         } else if (spawnedList && leavingLocation == null) { // we only spawn a list when we reach the counter, so this check is essentially ensuring we are at the counter
             patience -= Time.deltaTime;
             if (patienceMeter) patienceMeter.fillAmount = patience / startingPatience;
@@ -206,14 +210,10 @@ public class Customer : MonoBehaviour
         patience = time;
     }
 
-    public void SetupAsWindowShopper()
-    {
-        if (patienceMeter != null) patienceMeter.gameObject.SetActive(false);
-    }
-
     public void EndRequest(bool failed)
     {
         SetRequestFinishAnimationAudio(!failed);
+        patienceMeter.transform.parent.gameObject.SetActive(false);
     }
 
     public void LeaveNow()

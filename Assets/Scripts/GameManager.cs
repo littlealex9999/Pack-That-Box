@@ -23,9 +23,11 @@ public class GameManager : MonoBehaviour
 
     GameState state = GameState.Menu;
     #endregion
-    #region Required Miscellaneous
-    [Header("Required Miscellaneous"), SerializeField] Score scoreboard;
+    #region Miscellaneous
+    [Header("Miscellaneous"), SerializeField] Score scoreboard;
     float score;
+
+    [SerializeField] bool clearItemsOnGameEnd = true;
     #endregion
     #region Main Game Settings
     [Header("Main Game Settings"), SerializeField] float minutesToGameEnd;
@@ -119,11 +121,10 @@ public class GameManager : MonoBehaviour
     #region Unity
     void Start()
     {
-        // instance setup
         if (instance == null) instance = this;
         else Destroy(this);
 
-        // score setup
+        #region Score
         if (FileSystem.LoadFile("scores.txt", out Score loadedScores)) {
             scoreboard = loadedScores;
         }
@@ -135,8 +136,9 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < windowShopperLocations.Count; ++i) {
             usedWindowshopperLocations.Add(i, false);
         }
+        #endregion
 
-        // ui setup
+        #region UI
         if (strikesUI) {
             if (!playtimeUI.Contains(strikesUI)) {
                 playtimeUI.Add(strikesUI);
@@ -155,9 +157,12 @@ public class GameManager : MonoBehaviour
         }
 
         SetMenuUI(state);
+        #endregion
 
-        // miscellaneous setup
+        #region Window Shoppers
         windowShopperSpawnTimer = attemptSpawnWindowShopperTime;
+        if (maxWindowShoppers > windowShopperLocations.Count) maxWindowShoppers = windowShopperLocations.Count;
+        #endregion
     }
 
     void Update()
@@ -184,7 +189,10 @@ public class GameManager : MonoBehaviour
 
                 for (int i = 0; i < preparedBoxes.Count; ++i) {
                     if (CheckBoxDone(preparedBoxes[i], out Customer happyCustomer, out float scoreChange)) {
-                        Destroy(preparedBoxes[i].gameObject); // onDestroy on boxes removes them from preparedBoxes
+                        Box b = preparedBoxes[i];
+                        preparedBoxes.Remove(b);
+                        Destroy(b.gameObject);
+
                         --i; // our list is smaller, so we have to step back to ensure we check all elements
 
                         RemoveCustomer(happyCustomer);
@@ -275,7 +283,6 @@ public class GameManager : MonoBehaviour
         // create a random customer, add accessories, then disable everything unnecessary
         Customer newCustomer = Instantiate(customerPresets[Random.Range(0, customerPresets.Length)], chosenSpawnLocation, Quaternion.identity).GetComponent<Customer>();
         newCustomer.AttachAccessories(GenerateAccessories());
-        newCustomer.SetupAsWindowShopper();
 
         newCustomer.enabled = false;
 
@@ -544,6 +551,10 @@ public class GameManager : MonoBehaviour
         }
 
         SetMenuUI(state);
+
+        if (AudioManager.instance != null) {
+            AudioManager.instance.audioSource.PlayOneShot(ArrayHelper<AudioClip>.GetRandomElement(AudioManager.instance.gameStartSounds));
+        }
     }
 
     public void EndGame()
@@ -564,7 +575,11 @@ public class GameManager : MonoBehaviour
 
         SetMenuUI(state);
 
-        ClearItems();
+        if (AudioManager.instance != null) {
+            AudioManager.instance.audioSource.PlayOneShot(ArrayHelper<AudioClip>.GetRandomElement(AudioManager.instance.gameEndSounds));
+        }
+
+        if (clearItemsOnGameEnd) ClearItems();
     }
 
     [ContextMenu("Clear Items")]
