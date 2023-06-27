@@ -564,7 +564,7 @@ public class GameManager : MonoBehaviour
         score = 0;
 
         for (int i = currentCustomers.Count - 1; i >= 0; --i) {
-            RemoveCustomer(currentCustomers[i]);
+            RemoveCustomer(currentCustomers[i], true);
         }
 
         while (preparedBoxes.Count > 0) {
