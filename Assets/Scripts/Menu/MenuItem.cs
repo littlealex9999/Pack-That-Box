@@ -39,8 +39,11 @@ public class MenuItem : MonoBehaviour
 
     void ResetPosition()
     {
-        transform.position = startingPos;
         rb.velocity = Vector3.zero;
+
+        rb.isKinematic = true;
+        rb.position = startingPos;
+        rb.isKinematic = false;
     }    
 
     /// <summary>
