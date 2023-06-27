@@ -15,6 +15,7 @@ public class AudioManager : MonoBehaviour
 
     public AudioClip[] doorSounds;
     public AudioClip[] clearItemsSounds;
+    public AudioClip[] greetingCustomerSounds;
     public AudioClip[] happyCustomerSounds;
     public AudioClip[] angryCustomerSounds;
     public AudioClip[] gameStartSounds;
