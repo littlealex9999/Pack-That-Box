@@ -70,6 +70,8 @@ public class Customer : MonoBehaviour
             spawnedList = true;
 
             patienceMeter.transform.parent.gameObject.SetActive(true);
+
+            if (audioSource != null && AudioManager.instance != null) audioSource.PlayOneShot(ArrayHelper<AudioClip>.GetRandomElement(AudioManager.instance.greetingCustomerSounds));
         } else if (spawnedList && leavingLocation == null) { // we only spawn a list when we reach the counter, so this check is essentially ensuring we are at the counter
             patience -= Time.deltaTime;
             if (patienceMeter) patienceMeter.fillAmount = patience / startingPatience;

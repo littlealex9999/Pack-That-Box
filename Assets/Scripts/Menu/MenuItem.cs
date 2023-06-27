@@ -8,6 +8,7 @@ public class MenuItem : MonoBehaviour
     {
         Start,
         Stop,
+        Restart,
         ClearItems,
         Quit,
     }
@@ -57,6 +58,10 @@ public class MenuItem : MonoBehaviour
                 break;
             case MenuFunction.Stop:
                 StopGame();
+                break;
+            case MenuFunction.Restart:
+                StopGame();
+                StartGame();
                 break;
             case MenuFunction.ClearItems:
                 ClearItems();
