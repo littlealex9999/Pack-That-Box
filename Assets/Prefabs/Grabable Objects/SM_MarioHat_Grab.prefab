@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4236575458075917151}
   - component: {fileID: 9019489315336290728}
   - component: {fileID: 6381966128994066031}
+  - component: {fileID: 5829697275719516987}
   m_Layer: 0
   m_Name: SM_MarioHat_Grab
   m_TagString: Item
@@ -232,6 +233,19 @@ MonoBehaviour:
   m_ForceGravityOnDetach: 0
   m_RetainTransformParent: 1
   m_AttachPointCompatibilityMode: 0
+--- !u!65 &5829697275719516987
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3877271152117311695}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.6257254, y: 0.37650958, z: 0.7527673}
+  m_Center: {x: -0.00849694, y: -0.032085404, z: -0.07344425}
 --- !u!1001 &5267116574982586826
 PrefabInstance:
   m_ObjectHideFlags: 0
