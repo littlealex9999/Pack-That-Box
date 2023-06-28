@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 854386650526227243}
   - component: {fileID: 6009329323508522639}
   - component: {fileID: 3721608626336378394}
-  - component: {fileID: 2106316355548471966}
   - component: {fileID: 3425538664153702421}
+  - component: {fileID: -6465312116354776683}
   m_Layer: 0
   m_Name: SM_Potion_01 (1)
   m_TagString: Item
@@ -35,6 +35,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6096854707790668804}
+  - {fileID: 4814903863770786728}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -117,7 +118,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2106316355548471966
+--- !u!114 &3425538664153702421
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -126,7 +127,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1214732002257550078}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ad34abafad169848a38072baa96cdb2, type: 3}
+  m_Script: {fileID: 11500000, guid: f927423649df14c45b8ed0c0abd01c2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: 12
+  name: Health Potion
+--- !u!114 &-6465312116354776683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1214732002257550078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56283c1dfb43e034287813ed7f3339e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_InteractionManager: {fileID: 0}
@@ -195,7 +210,7 @@ MonoBehaviour:
   m_OnDeactivate:
     m_PersistentCalls:
       m_Calls: []
-  m_AttachTransform: {fileID: 0}
+  m_AttachTransform: {fileID: 4814903863770786728}
   m_AttachEaseInTime: 0.15
   m_MovementType: 2
   m_VelocityDamping: 1
@@ -232,20 +247,38 @@ MonoBehaviour:
   m_ForceGravityOnDetach: 0
   m_RetainTransformParent: 1
   m_AttachPointCompatibilityMode: 0
---- !u!114 &3425538664153702421
-MonoBehaviour:
+  moveGrabTransform: 1
+--- !u!1 &2174128692121628398
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1214732002257550078}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f927423649df14c45b8ed0c0abd01c2c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ID: 12
-  name: Health Potion
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4814903863770786728}
+  m_Layer: 0
+  m_Name: GrabTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4814903863770786728
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2174128692121628398}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.0402, y: -0.0917, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1986167688903024708}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &5987210732863390703
 PrefabInstance:
   m_ObjectHideFlags: 0
