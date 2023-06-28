@@ -67,6 +67,8 @@ public class XRInteractorLineRenderer : MonoBehaviour
             directInteractor.enabled = true;
             raycastInteractor.enabled = true;
             raysphereInteractor.enabled = true;
+
+            hoveringObjects = true;
         }
 
         if (hoveringObjects && hoverTargets.Count > 0) {
@@ -75,7 +77,7 @@ public class XRInteractorLineRenderer : MonoBehaviour
 
             lineRenderer.SetPosition(0, transform.position);
             lineRenderer.SetPosition(1, ChooseTarget().position);
-        } else if (drawLineWhenNoPickup) {
+        } else if (hoveringObjects && drawLineWhenNoPickup) {
             lineRenderer.colorGradient = normalColors;
 
             lineRenderer.SetPosition(0, transform.position);
@@ -86,7 +88,7 @@ public class XRInteractorLineRenderer : MonoBehaviour
             } else {
                 lineRenderer.SetPosition(1, transform.position + transform.forward * biggestDistance);
             }
-        } else if (lineRenderer.enabled) {
+        } else if (!drawLineWhenNoPickup && lineRenderer.enabled) {
             lineRenderer.enabled = false;
         }
     }
