@@ -88,7 +88,7 @@ public class XRInteractorLineRenderer : MonoBehaviour
             } else {
                 lineRenderer.SetPosition(1, transform.position + transform.forward * biggestDistance);
             }
-        } else if (!drawLineWhenNoPickup && lineRenderer.enabled) {
+        } else if (!hoveringObjects || !drawLineWhenNoPickup && lineRenderer.enabled) {
             lineRenderer.enabled = false;
         }
     }

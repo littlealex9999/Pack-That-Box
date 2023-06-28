@@ -399,6 +399,12 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
+    public void WindowShopperLeave(WindowShopper shopper)
+    {
+        --windowShopperCount;
+        usedWindowshopperLocations[shopper.assignedIndex] = false;
+    }
+
     void AssignLeavingLocation(Customer customer)
     {
         AssignLeavingLocation(customer, Random.Range(0, customerLeaveLocations.Length));
