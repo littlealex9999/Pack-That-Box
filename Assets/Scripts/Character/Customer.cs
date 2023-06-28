@@ -41,6 +41,8 @@ public class Customer : MonoBehaviour
     [SerializeField, Range(0, 1)] float angryThreshold;
     [SerializeField] GameObject[] activateOnAngry;
 
+    [Space, SerializeField] Blinking eyes;
+
     public enum AccessoryTypes
     {
         Head,
@@ -198,9 +200,19 @@ public class Customer : MonoBehaviour
     {
         if (success) {
             if (animator != null) animator.SetTrigger("Success");
+            if (eyes != null) {
+                eyes.manualControl = true;
+                eyes.SetEyes(Blinking.EyeState.Happy);
+            }
+
             if (audioSource != null) audioSource.PlayOneShot(ArrayHelper<AudioClip>.GetRandomElement(AudioManager.instance.happyCustomerSounds));
         } else if (animator) {
             if (animator != null) animator.SetTrigger("Fail");
+            if (eyes != null) {
+                eyes.manualControl = true;
+                eyes.SetEyes(Blinking.EyeState.Angry);
+            }
+
             if (audioSource != null) audioSource.PlayOneShot(ArrayHelper<AudioClip>.GetRandomElement(AudioManager.instance.angryCustomerSounds));
         }
     }
@@ -221,6 +233,10 @@ public class Customer : MonoBehaviour
     public void LeaveNow()
     {
         leaving = true;
+
+        if (eyes != null) {
+            eyes.manualControl = false;
+        }
 
         GameManager.instance.customers.Remove(this);
         SetMoveTarget(leavingLocation);
