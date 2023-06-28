@@ -7767,10 +7767,10 @@ MonoBehaviour:
   - {fileID: 9174629116523367644, guid: 7ac85333def65bf42b8f04770ef8171b, type: 3}
   customerEarsAccessories:
   - {fileID: 3683152784129121739, guid: 0aa42528737c3564f86b8e50b4e10a4a, type: 3}
-  - {fileID: 3546653898787918840, guid: a6c8cec0d84766f489701ec40e54deea, type: 3}
   customerNeckAccessories:
   - {fileID: 9174629116523367644, guid: 7ac85333def65bf42b8f04770ef8171b, type: 3}
   - {fileID: 1071973757654116961, guid: e14ccbd7d207e5f49b7d3b51356aa767, type: 3}
+  - {fileID: 0}
   mainMenuUI:
   - {fileID: 756864645}
   playtimeUI:
