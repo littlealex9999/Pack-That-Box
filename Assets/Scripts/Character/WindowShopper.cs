@@ -49,7 +49,7 @@ public class WindowShopper : MonoBehaviour
             waiting = false;
             GoToLocation(leaveLocation.position);
 
-            --GameManager.instance.windowShopperCount;
+            GameManager.instance.WindowShopperLeave(this);
         }
 
         if (animator != null) {
