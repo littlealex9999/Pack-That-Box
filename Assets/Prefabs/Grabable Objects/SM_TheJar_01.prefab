@@ -19,9 +19,10 @@ GameObject:
   - component: {fileID: 3507441097977463766}
   - component: {fileID: 3507441097977463767}
   - component: {fileID: 3507441097977463772}
+  - component: {fileID: 7115565049142466073}
   m_Layer: 0
   m_Name: SM_TheJar_01
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -303,6 +304,20 @@ MonoBehaviour:
   m_RetainTransformParent: 1
   m_AttachPointCompatibilityMode: 0
   moveGrabTransform: 1
+--- !u!114 &7115565049142466073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4354284615246295168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f927423649df14c45b8ed0c0abd01c2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ID: 15
+  name: The Jar
 --- !u!1 &5653251809613746835
 GameObject:
   m_ObjectHideFlags: 0
@@ -385,6 +400,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 3eff6a9185174f64887d1ad06550506c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1b55129df6a5f0246ab033e9eab8a8ba, type: 2}
     - target: {fileID: 919132149155446097, guid: 3eff6a9185174f64887d1ad06550506c, type: 3}
       propertyPath: m_Name
       value: SM_Autism_01
