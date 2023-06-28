@@ -5450,7 +5450,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e419125364fc1a4499dfaeb1caa3bad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  function: 1
+  function: 2
   offset: {x: 0, y: 0, z: 0}
   maxDistance: 1
 --- !u!114 &855830195
@@ -5780,9 +5780,18 @@ MonoBehaviour:
   windowShopperWaitDuration: 4
   attemptSpawnWindowShopperTime: 10
   windowShopperCount: 0
-  customerHeadAccessories: []
-  customerEarsAccessories: []
-  customerNeckAccessories: []
+  customerHeadAccessories:
+  - {fileID: 3042133083558635632, guid: 242bbd04a24c6814c9968d7690d2ad41, type: 3}
+  - {fileID: 2555086635970488356, guid: c0349c1d4ca0eb548aa992138d0c2edf, type: 3}
+  - {fileID: 1846495629498679668, guid: b57687ed54433ed41a5e7d665a90c6e4, type: 3}
+  - {fileID: 5366474281055201380, guid: ab91763766a0010468609d444b39d1af, type: 3}
+  - {fileID: 6459302119821725122, guid: 25eae5cc1a18ea346b21ec7a97d42eaf, type: 3}
+  customerEarsAccessories:
+  - {fileID: 3683152784129121739, guid: 0aa42528737c3564f86b8e50b4e10a4a, type: 3}
+  - {fileID: 3546653898787918840, guid: a6c8cec0d84766f489701ec40e54deea, type: 3}
+  customerNeckAccessories:
+  - {fileID: 1071973757654116961, guid: e14ccbd7d207e5f49b7d3b51356aa767, type: 3}
+  - {fileID: 9174629116523367644, guid: 7ac85333def65bf42b8f04770ef8171b, type: 3}
   mainMenuUI:
   - {fileID: 756864645}
   playtimeUI:
