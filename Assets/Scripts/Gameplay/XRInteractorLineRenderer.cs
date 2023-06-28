@@ -71,7 +71,7 @@ public class XRInteractorLineRenderer : MonoBehaviour
             hoveringObjects = true;
         }
 
-        if (hoveringObjects && hoverTargets.Count > 0) {
+        if (hoveringObjects && hoverTargets != null && hoverTargets.Count > 0) {
             if (!lineRenderer.enabled) lineRenderer.enabled = true;
             lineRenderer.colorGradient = hoverObjectColors;
 
